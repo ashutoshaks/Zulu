@@ -1,0 +1,476 @@
+\documentclass{scrreprt}
+\usepackage{listings}
+\usepackage{underscore}
+\usepackage[bookmarks=true]{hyperref}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+
+\areaset{16cm}{26cm}
+
+% \usepackage[a4paper,
+% top=2cm,
+% bottom=1cm,
+% includefoot,
+% left=4cm,
+% right=2cm,
+% footskip=1cm]{geometry}
+% \usepackage{scrlayer-scrpage}
+% \rofoot*{\pagemark}
+% \cofoot*{}
+% \pagestyle{scrheadings}
+% \lohead*{John Doe}
+% \rohead{\pagemark}
+% \usepackage{lipsum} 
+
+% \usepackage[margin=1in]{geometry}
+
+% \usepackage[top=3cm,bottom=3cm]{geometry}
+
+% \usepackage[hscale=0.69,vscale=0.99,heightrounded,includehead]{geometry}
+% \usepackage{blindtext}
+% \pagestyle{headings}
+
+
+
+\hypersetup{
+    % bookmarks=false,    % show bookmarks bar?
+    pdftitle={Software Requirement Specification},    % title
+    pdfauthor={Jean-Philippe Eisenbarth},                     % author
+    pdfsubject={TeX and LaTeX},                        % subject of the document
+    pdfkeywords={TeX, LaTeX, graphics, images}, % list of keywords
+    colorlinks=true,       % false: boxed links; true: colored links
+    linkcolor=black,       % color of internal links
+    citecolor=black,       % color of links to bibliography
+    filecolor=black,        % color of file links
+    urlcolor=blue,        % color of external links
+    linktoc=page            % only page is linked
+}%
+\def\myversion{1.0 }
+\date{}
+
+\begin{document}
+
+% \areaset{16cm}{24cm}
+
+\begin{flushright}
+    \rule{16cm}{5pt}\vskip1cm
+    \begin{bfseries}
+        \Huge{SOFTWARE REQUIREMENTS\\ SPECIFICATION}\\
+        \vspace*{0.8cm}
+        \huge{for}\\
+        \vspace*{0.8cm}
+        \Huge{Zulu - A Motor Part Shop\\ Software}\\
+        \vspace*{1.5cm}
+        \LARGE{Version \myversion approved}\\
+        \vspace*{1.5cm}
+        Prepared by -\\
+        \vspace*{0.5cm}
+        Ashutosh Kumar Singh (19CS30008)\\
+        \vspace*{0.5cm}
+        Vanshita Garg (19CS10064)\\
+        \vspace*{0.5cm}
+        Suhas Jain (19CS30048)\\
+        \vspace*{1.5cm}
+        Indian Institute of Technology, Kharagpur\\
+        \vspace*{1.5cm}
+        \today\\
+    \end{bfseries}
+\end{flushright}
+
+\tableofcontents
+
+\section*{Revision History}
+
+\begin{center}
+    \begin{tabular}{|c|c|c|c|}
+        \hline
+	    Name & Date & Reason For Changes & Version\\
+        \hline
+	     &  & & \\
+        \hline
+	     &  & & \\
+        \hline
+    \end{tabular}
+\end{center}
+
+\chapter{Introduction}
+
+\section{Purpose}
+% $<$Identify the product whose software requirements are specified in this 
+% document, including the revision or release number. Describe the scope of the 
+% product that is covered by this SRS, particularly if this SRS describes only 
+% part of the system or a single subsystem.$>$
+
+Zulu is a software that manages the inventory and streamlines the sales and supply ordering for an automobile spare parts shop. This can be used by a motor parts shop owner. The software contains features to keep track of the quantity of each part in the inventory, order items when required and generate sales reports on a daily and monthly basis.\\ The purpose of this document is to explain the features, purpose and constraints under which the software would be built.
+
+\section{Document Conventions}
+% $<$Describe any standards or typographical conventions that were followed when 
+% writing this SRS, such as fonts or highlighting that have special significance.  
+% For example, state whether priorities  for higher-level requirements are assumed 
+% to be inherited by detailed requirements, or whether every requirement statement 
+% is to have its own priority.$>$
+This SRS document has been written in Latex using KOMA Script. The font used in the document is Computer Modern. Each chapter of the document begins from a new page and the chapter heading is written in a bold large font. Headings of sections within a chapter are also written in bold but with a slightly smaller font. 
+
+\section{Intended Audience and Reading Suggestions}
+% $<$Describe the different types of reader that the document is intended for, 
+% such as developers, project managers, marketing staff, users, testers, and 
+% documentation writers. Describe what the rest of this SRS contains and how it is 
+% organized. Suggest a sequence for reading the document, beginning with the 
+% overview sections and proceeding through the sections that are most pertinent to 
+% each reader type.$>$
+
+This document lists all technical and non-technical aspects of the software. It is intended to assist developers, project managers, marketing staff, users, testers, documentation writers and other end users to understand the motivation behind the software and understand implementation intricacies in it.\\
+A brief summary of the whole SRS document can be encapsulated under following sections.\\
+Users are suggested to follow this sequence in order to have a better
+understanding of the document.\\
+Chapter 1 : Basic Introduction\\
+Chapter 2 : Overall Description of the software giving information about functions, user classes,\\ \hspace*{1.9cm} operating environment, assumptions and dependencies\\
+Chapter 3 : External Interface Requirements giving a brief introduction to user, hardware,\\ \hspace*{1.9cm} software and communication interfaces\\
+Chapter 4 : Various system features\\
+Chapter 5 : Non-functional requirements \\
+Chapter 6 : Use Case Diagram and Class Diagram
+
+\section{Product Scope}
+% $<$Provide a short description of the software being specified and its purpose, 
+% including relevant benefits, objectives, and goals. Relate the software to 
+% corporate goals or business strategies. If a separate vision and scope document 
+% is available, refer to it rather than duplicating its contents here.$>$
+
+Managing the inventory of any shop with a large number of products and items has always been a tedious task involving a lot of people, and an automobile spare parts shop is no exception. Doing this task manually consumes a lot of time, energy, money and manpower. Zulu automates this process of keeping track of the inventory. Moreover, the software automatically generates a list of items to be ordered so as to maintain sufficient stock for one week. This relieves the shop owner of the burden of calculating which items are in deficit. It also gives him/her an advantage over his/her competitors as customers will prefer a shop where parts are readily available. The software also generates daily and monthly sales reports which help the owner analyze his/her business strategy and make suitable decisions to ensure that the business flourishes in the future.
+
+\section{References}
+% $<$List any other documents or Web addresses to which this SRS refers. These may 
+% include user interface style guides, contracts, standards, system requirements 
+% specifications, use case documents, or a vision and scope document. Provide 
+% enough information so that the reader could access a copy of each reference, 
+% including title, author, version number, date, and source or location.$>$
+
+IEEE Standard 830 - 1998 IEEE Recommended Practice for Software Requirements Specifications, IEEE Computer Society, 1998.\\ \\
+Slides from the NPTEL course Object Oriented Analaysis and Design by Prof. Partha Pratim Das, IIT Kharagpur.\\
+\url{https://nptel.ac.in/courses/106/105/106105153/}
+
+\chapter{Overall Description}
+
+\section{Product Perspective}
+% $<$Describe the context and origin of the product being specified in this SRS.  
+% For example, state whether this product is a follow-on member of a product 
+% family, a replacement for certain existing systems, or a new, self-contained 
+% product. If the SRS defines a component of a larger system, relate the 
+% requirements of the larger system to the functionality of this software and 
+% identify interfaces between the two. A simple diagram that shows the major 
+% components of the overall system, subsystem interconnections, and external 
+% interfaces can be helpful.$>$
+
+Although there may be many similar products available on the internet that work on similar ideas, but hardly any one of them is designed specifically for an automobile spare parts shop. Moreover, they charge for their services and are hence not very popular among small scale users. Zulu is a self-contained product that aims to render its services to the users at a negligible one time cost. This product aims to break the complicated barrier by introducing a very user friendly experience.
+
+\section{Product Functions}
+% $<$Summarize the major functions the product must perform or must let the user 
+% perform. Details will be provided in Section 3, so only a high level summary 
+% (such as a bullet list) is needed here. Organize the functions to make them 
+% understandable to any reader of the SRS. A picture of the major groups of 
+% related requirements and how they relate, such as a top level data flow diagram 
+% or object class diagram, is often effective.$>$
+
+This product contains a variety of small-scale features which can be listed as follows:
+\begin{itemize}
+    \item Add new motor spare parts to the inventory
+    \item Remove motor spare parts from the inventory
+    \item Record a sale and update the quantity of any item in the inventory
+    \item Generate a list of items to be ordered
+    \item Generate daily sales revenue
+    \item Generate a graph showing the daily sales for a month
+\end{itemize}
+
+
+\section{User Classes and Characteristics}
+% $<$Identify the various user classes that you anticipate will use this product.  
+% User classes may be differentiated based on frequency of use, subset of product 
+% functions used, technical expertise, security or privilege levels, educational 
+% level, or experience. Describe the pertinent characteristics of each user class.  
+% Certain requirements may pertain only to certain user classes. Distinguish the 
+% most important user classes for this product from those who are less important 
+% to satisfy.$>$
+
+The software is intended to be used by the shop owner of an automobile spare parts shop. The shop owner himself/herself will use the software for all its functionalities, be it recording a sale, generating the list of items to be ordered or analyzing the daily and monthly revenue trends.
+
+\section{Operating Environment}
+% $<$Describe the environment in which the software will operate, including the 
+% hardware platform, operating system and versions, and any other software 
+% components or applications with which it must peacefully coexist.$>$
+
+The software will run on both Windows and Linux, however the setup and usage instructions will vary. The system should have Java installed in it and should also support MySQL. It is preferable to have Apache Netbeans installed as that will facilitate the execution, however it is not a necessity. There are no specific hardware requirements.
+
+\section{Design and Implementation Constraints}
+% $<$Describe any items or issues that will limit the options available to the 
+% developers. These might include: corporate or regulatory policies; hardware 
+% limitations (timing requirements, memory requirements); interfaces to other 
+% applications; specific technologies, tools, and databases to be used; parallel 
+% operations; language requirements; communications protocols; security 
+% considerations; design conventions or programming standards (for example, if the 
+% customer’s organization will be responsible for maintaining the delivered 
+% software).$>$
+
+Some of the constraints or difficulties that may be faced during the course of the software development process are :
+\begin{itemize}
+    \item A waterfall model of software development has been followed in this project. So, there is a lack of feedback from the user during the entire software development process.
+    \item The testing phase begins after the development phase is over, hence it is quite difficult to make amends or changes to the product.
+    \item The software will not work on mobile operating systems like Android etc.
+    \item The storage of data can pose a problem if the total data size becomes too large.
+\end{itemize}
+
+\section{User Documentation}
+% $<$List the user documentation components (such as user manuals, on-line help, 
+% and tutorials) that will be delivered along with the software. Identify any 
+% known user documentation delivery formats or standards.$>$
+
+The software will come with a README file which will act as the user manual. It can also be given to the user in a printed format. It will contain all the necessary instructions to setup and use the software to avail all the functionalities. The user manual (README file) will be written maintaining proper standards and conventions.
+
+\section{Assumptions and Dependencies}
+
+% $<$List any assumed factors (as opposed to known facts) that could affect the 
+% requirements stated in the SRS. These could include third-party or commercial 
+% components that you plan to use, issues around the development or operating 
+% environment, or constraints. The project could be affected if these assumptions 
+% are incorrect, are not shared, or change. Also identify any dependencies the 
+% project has on external factors, such as software components that you intend to 
+% reuse from another project, unless they are already documented elsewhere (for 
+% example, in the vision and scope document or the project plan).$>$
+
+%jdbc, sql-connector for netbeans.
+The software assumes that only a single owner will be using it so there is no option for creating multiple owner accounts. It also assumes only a single item is entered while recording a sale (quantity can be more than one), and if more than one type of item is being sold the owner can report them multiple times as different sales. Another assumption this software makes is that the owner generates the list of items to be ordered at the end of each day. Also, the owner always orders the suggested quantity of these items. Other than this, the software just assumes a working computer, installed dependencies and enough space to store the data.
+
+\chapter{External Interface Requirements}
+
+\section{User Interfaces}
+% $<$Describe the logical characteristics of each interface between the software 
+% product and the users. This may include sample screen images, any GUI standards 
+% or product family style guides that are to be followed, screen layout 
+% constraints, standard buttons and functions (e.g., help) that will appear on 
+% every screen, keyboard shortcuts, error message display standards, and so on.  
+% Define the software components for which a user interface is needed. Details of 
+% the user interface design should be documented in a separate user interface 
+% specification.$>$
+
+Zulu will be a desktop application with which the shop owner will interact. The owner will initially see a login page. After logging in to the system, the owner will see a dashboard with options to add/remove items to/from the inventory, view the current items in the inventory or record a sale. The owner will also see a list of items to be ordered at the end of each day and a graph to see the daily sales for a month.
+
+\section{Hardware Interfaces}
+% $<$Describe the logical and physical characteristics of each interface between 
+% the software product and the hardware components of the system. This may include 
+% the supported device types, the nature of the data and control interactions 
+% between the software and the hardware, and communication protocols to be 
+% used.$>$
+
+The only hardware component being used is the desktop/laptop on which the application will run. A good processor will help speed up the execution and queries from the database. Apart from this, there are no specific hardware interactions or components.
+
+\section{Software Interfaces}
+% $<$Describe the connections between this product and other specific software 
+% components (name and version), including databases, operating systems, tools, 
+% libraries, and integrated commercial components. Identify the data items or 
+% messages coming into the system and going out and describe the purpose of each.  
+% Describe the services needed and the nature of communications. Refer to 
+% documents that describe detailed application programming interface protocols.  
+% Identify data that will be shared across software components. If the data 
+% sharing mechanism must be implemented in a specific way (for example, use of a 
+% global data area in a multitasking operating system), specify this as an 
+% implementation constraint.$>$
+
+The backend part is written in Java. The frontend of the application is designed using the Java Swing GUI package. MySQL has been used for database management. The application will interact with the database by means of JDBC (Java Database Connector). The database will be hosted on the owner's system itself, and will be secured with a username-password combination. The database will contain the metadata for setting up the software and will also store all the information about each item in the inventory at any point of time.
+
+\section{Communications Interfaces}
+% $<$Describe the requirements associated with any communications functions 
+% required by this product, including e-mail, web browser, network server 
+% communications protocols, electronic forms, and so on. Define any pertinent 
+% message formatting. Identify any communication standards that will be used, such 
+% as FTP or HTTP. Specify any communication security or encryption issues, data 
+% transfer rates, and synchronization mechanisms.$>$
+Other than the MySQL database hosted on a local server, the software does not communicate with any other entity like the internet or any other software. 
+
+\chapter{System Features}
+% $<$This template illustrates organizing the functional requirements for the 
+% product by system features, the major services provided by the product. You may 
+% prefer to organize this section by use case, mode of operation, user class, 
+% object class, functional hierarchy, or combinations of these, whatever makes the 
+% most logical sense for your product.$>$
+
+\section{Add an Item}
+
+\subsection{Description and Priority}
+% $<$Provide a short description of the feature and indicate whether it is of 
+% High, Medium, or Low priority. You could also include specific priority 
+% component ratings, such as benefit, penalty, cost, and risk (each rated on a 
+% relative scale from a low of 1 to a high of 9).$>$
+
+This feature enables the owner to add a new item to the inventory. Although this feature is not of the highest priority, yet it helps the functioning of a real world automobile spare parts shop as new items, parts and tools arrive in the market very frequently.
+
+\subsection{Stimulus/Response Sequences}
+% $<$List the sequences of user actions and system responses that stimulate the 
+% behavior defined for this feature. These will correspond to the dialog elements 
+% associated with use cases.$>$
+
+After logging into the system, the owner will select an option to add a new item, in response to which, the system will ask for information in the data fields like item type, manufacturer, vehicle type, price and initial quantity. After confirmation of these details, the new item will be added in the inventory database and a success message will be displayed.
+
+\subsection{Functional Requirements}
+% $<$Itemize the detailed functional requirements associated with this feature.  
+% These are the software capabilities that must be present in order for the user 
+% to carry out the services provided by the feature, or to execute the use case.  
+% Include how the product should respond to anticipated error conditions or 
+% invalid inputs. Requirements should be concise, complete, unambiguous, 
+% verifiable, and necessary. Use “TBD” as a placeholder to indicate when necessary 
+% information is not yet available.$>$
+
+% $<$Each requirement should be uniquely identified with a sequence number or a 
+% meaningful tag of some kind.$>$
+
+REQ-1 : The software should be able to perform sanity checks to ensure that the item is not\\ \hspace*{1.5cm} already present in the inventory database.\\
+REQ-2 : It should be able to detect if any data field has been left empty, and also ensure that\\ \hspace*{1.5cm} the quantity of the item entered is positive.\\
+REQ-3 : The software should add the details of the item in the inventory database.
+
+\section{View Inventory}
+
+\subsection{Description and Priority}
+
+This feature enables the owner to view the items present in the inventory along with their details like item type, manufacturer, vehicle type and quantity, at any moment of time. Viewing the items in the inventory is a high priority feature in any inventory management software, as this helps the owner to get an estimate of the current stock.
+
+\subsection{Stimulus/Response Sequences}
+
+The owner will have an option to view the items in the inventory, on his/her home screen. After clicking this option, a table of all the items currently present in the inventory will be displayed on the screen.
+
+\subsection{Functional Requirements}
+
+REQ-1 : The software should be able to access the details of all the items and display them in\\\hspace*{1.5cm} a tabular form on the screen.\\
+REQ-2 : If there are a large number of items, then there should be a scrollable table to view the\\ \hspace*{1.5cm} details of all the items.
+
+\section{Record a Sale}
+\label{sec:4.3}
+
+\subsection{Description and Priority}
+
+This feature allows the owner to record the details of a sale made at any point of time in a day. This feature facilitates the process of updating the quantity of each item in the inventory and hence is quite an important feature.
+
+\subsection{Stimulus/Response Sequences}
+
+The owner will have an option on the home screen to record a sale. He/she will then be redirected to a new page where the item which is being sold will have to be selected. First, the owner will be asked to choose the item type from a drop-down menu. Then a new drop-down menu will appear showing a list of all the manufacturers that make that item. After selecting a particular manufacturer, a new drop-down menu showing the vehicle types for the selected item type and manufacturer will appear. On choosing a vehicle type, the item selection process will be complete. The owner will also have to enter the quantity of the item being sold. On confirming the sale, it will be processed and the inventory database will be appropriately updated.
+
+\subsection{Functional Requirements}
+
+REQ-1 : The three-level drop down list should be such that the items appearing in the next\\ \hspace*{1.5cm} drop-down menu change dynamically according to the item selected in the previous\\\hspace*{1.5cm} drop-down menu.\\
+REQ-2 : The software should be able to ensure that the quantity being sold is positive.\\
+REQ-3 : The software should be capable of updating the quantity of the item sold in the\\ \hspace*{1.5cm} inventory database.
+
+\section{Remove Item}
+
+\subsection{Description and Priority}
+
+This feature allows the user to remove the existence of an item from the inventory database. This is not a high priority feature, but it helps in mimicking the processes and working of a real world motor parts shop.
+
+\subsection{Stimulus/Response Sequences}
+
+The owner will have an option to remove a specific item from the inventory, on his/her home screen. After clicking this option, the owner will be asked to select an item in a manner similar to that described in the \hyperref[sec:4.3]{\underline{\textit{Record a Sale}}} feature. After selecting the item and confirming, if it is present in the inventory database, then it will be removed.
+
+\subsection{Functional Requirements}
+
+REQ-1 : The software should be able to check that the item which is being removed exists in\\ \hspace*{1.5cm} the  inventory or not.\\
+REQ-2 : The software should be able to delete the entry of the item from the database, and if\\ \hspace*{1.5cm} required, it should also be able to delete the entry of the manufacturer supplying that\\\hspace*{1.5cm} item, provided the same manufacturer does not supply any other item.
+
+\pagebreak
+
+\section{Generate and Save Order List}
+
+\subsection{Description and Priority}
+
+This feature enables the owner to generate a list of all the items at the end of a day, that have fallen below their threshold value and needs to be ordered. This is the feature with the highest priority as this is the task which when automated, saves a lot of time and energy.
+
+\subsection{Stimulus/Response Sequences}
+
+To indicate that a particular sale was the last sale of a day, the owner will select a button to indicate that the current day has ended. After this, the software will automatically find out which items are in deficit (fallen below the threshold in quantity) and hence, need to be ordered. It will generate a list of such items in the form of a table and the owner will have an option to save the list.
+
+\subsection{Functional Requirements}
+
+REQ-1 : The software should be able to calculate the threshold for each item at the end of a\\\hspace*{1.5cm} day by computing the average sale of that item.\\
+REQ-2 : The software should display the list of items to be ordered along with their quantity\\\hspace*{1.5cm} and vendor address in a tabular format and provide an option to the user to save that\\\hspace*{1.5cm} list.
+
+\section{Generate Revenue and Graph}
+
+\subsection{Description and Priority}
+
+This feature helps the owner to perform various analytics tasks like generating the revenue at the end of each day and at the end of each month, and also plotting a graph showing the sales for each day of the month. This can be considered as a secondary feature.
+
+\subsection{Stimulus/Response Sequences}
+
+At the end of each day, after the order list has been generated, the owner will have an option to see the revenue generated on that day. On selecting that option, the appropriate revenue will be displayed. Also, there will be an option to generate a graph showing the sales of each day of the previous month, which will also be displayed by selecting the appropriate option.
+
+\subsection{Functional Requirements}
+
+REQ-1 : The software should be capable of storing the revenue for each day of the last one\\\hspace*{1.5cm} month.\\
+REQ-2 : The software should be able to display the daily sales for a month in a graphical format\\\hspace*{1.5cm} on the screen.
+
+\chapter{Other Nonfunctional Requirements}
+
+\section{Performance Requirements}
+% $<$If there are performance requirements for the product under various 
+% circumstances, state them here and explain their rationale, to help the 
+% developers understand the intent and make suitable design choices. Specify the 
+% timing relationships for real time systems. Make such requirements as specific 
+% as possible. You may need to state performance requirements for individual 
+% functional requirements or features.$>$
+The software does not require a high-end CPU, GPU or internet connection. As long as all the dependencies are installed and the system is decent enough, the software should run without any issues.
+
+\section{Safety Requirements}
+% $<$Specify those requirements that are concerned with possible loss, damage, or 
+% harm that could result from the use of the product. Define any safeguards or 
+% actions that must be taken, as well as actions that must be prevented. Refer to 
+% any external policies or regulations that state safety issues that affect the 
+% product’s design or use. Define any safety certifications that must be 
+% satisfied.$>$
+The application operates above multiple abstraction layers over the hardware and there is little possibility of damage to the owner's device. However, it is the responsibility of the owner, if he/she incurs any business losses.
+
+\section{Security Requirements}
+% $<$Specify any requirements regarding security or privacy issues surrounding use 
+% of the product or protection of the data used or created by the product. Define 
+% any user identity authentication requirements. Refer to any external policies or 
+% regulations containing security issues that affect the product. Define any 
+% security or privacy certifications that must be satisfied.$>$
+To prevent anyone else apart from the shop owner to use the software, the software displays a login page whenever it is loaded. Only when the owner enters the correct username and password, he/she is allowed to move to the next page where he/she can access the inventory or make any kind of changes to the data.
+
+\section{Software Quality Attributes}
+% $<$Specify any additional quality characteristics for the product that will be 
+% important to either the customers or the developers. Some to consider are: 
+% adaptability, availability, correctness, flexibility, interoperability, 
+% maintainability, portability, reliability, reusability, robustness, testability, 
+% and usability. Write these to be specific, quantitative, and verifiable when 
+% possible. At the least, clarify the relative preferences for various attributes, 
+% such as ease of use over ease of learning.$>$
+
+The software should be easy to maintain and user friendly. It will be able to adapt to new features by making least changes to the code. It will be easy to upgrade to later versions of the software. This will enhance the maintainability and reusability of the software. The software will support feedback once it is deployed to inculcate the newer requirements that may come ahead. The software would be flexible with any third party software that it may interact with. The user interface will be friendly and will enable easy understanding of the features and their usage.
+
+\section{Business Rules}
+% $<$List any operating principles about the product, such as which individuals or 
+% roles can perform which functions under specific circumstances. These are not 
+% functional requirements in themselves, but they may imply certain functional 
+% requirements to enforce the rules.$>$
+
+The owner of the shop is allowed to use all the features of the software, as he is expected to be the sole user. Also, the software should not be outsourced to any third party without prior permission. The project holder reserves all the applicable rights of the project licenses and permissions are applicable before any industrial use.
+
+\chapter{Analysis Models}
+
+\section{Use Case Diagram}
+
+\begin{center}
+    \begin{figure}[h]
+        \centering
+        \includegraphics[height = 420, width = 473]{ucsrs.jpeg}
+    \end{figure}
+\end{center}
+
+\pagebreak
+
+\section{Class Diagram}
+
+\begin{centering}
+    \begin{figure}[h]
+        \centering
+        \includegraphics[height = 440, width = 510]{csrs.jpeg}
+    \end{figure}
+\end{centering}
+
+\end{document}
