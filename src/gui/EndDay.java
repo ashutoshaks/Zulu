@@ -7,7 +7,7 @@ package gui;
 
 /**
  *
- * @author suhas
+ * @author achcha
  */
 public class EndDay extends javax.swing.JFrame {
 

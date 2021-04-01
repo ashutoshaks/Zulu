@@ -7,7 +7,7 @@ package gui;
 
 /**
  *
- * @author vanshita
+ * @author achcha
  */
 public class ViewGraph extends javax.swing.JFrame {
 

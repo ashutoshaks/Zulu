@@ -7,7 +7,7 @@ package gui;
 
 /**
  *
- * @author vanshita
+ * @author achcha
  */
 public class HomePage extends javax.swing.JPanel {
 

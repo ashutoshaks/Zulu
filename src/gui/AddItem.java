@@ -7,7 +7,7 @@ package gui;
 
 /**
  *
- * @author suhas
+ * @author achcha
  */
 public class AddItem extends javax.swing.JFrame {
 

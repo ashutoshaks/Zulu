@@ -7,7 +7,7 @@ package gui;
 
 /**
  *
- * @author vanshita
+ * @author achcha
  */
 public class RemoveItem extends javax.swing.JFrame {
 

@@ -7,7 +7,7 @@ package gui;
 
 /**
  *
- * @author suhas
+ * @author achcha
  */
 public class ReportSale extends javax.swing.JFrame {
 
