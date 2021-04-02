@@ -23,10 +23,11 @@ import java.util.logging.Logger;
  */
 
 public class Inventory {
-    static HashMap<String, HashMap<Integer, HashMap<String, Item>>> searchMap = new HashMap<String, HashMap<Integer, HashMap<String, Item>>>();
-    static HashMap<Integer, Item> itemsList = new HashMap<Integer, Item>();
-    static HashMap<Integer, Manufacturer> manufacturersList = new HashMap<Integer, Manufacturer>();
-    static LocalDate currentDate;
+    public static HashMap<String, HashMap<Integer, HashMap<String, Item>>> searchMap = new HashMap<String, HashMap<Integer, HashMap<String, Item>>>();
+    public static HashMap<Integer, Item> itemsList = new HashMap<Integer, Item>();
+    public static HashMap<Integer, Manufacturer> manufacturersList = new HashMap<Integer, Manufacturer>();
+    public static HashMap<String, Integer> manufacturerIDList = new HashMap<String, Integer>();
+    public static LocalDate currentDate;
     
     private static Inventory instance = null;
     
@@ -37,6 +38,7 @@ public class Inventory {
     }
     
     public void retrieveData(){
+        System.out.println("backend.Inventory.retrieveData() pe aa gaya");
         try {
             Connection con = DB.getConnection();
             PreparedStatement ps;
@@ -44,7 +46,7 @@ public class Inventory {
             ps = con.prepareStatement("SELECT * FROM owner");
             rs = ps.executeQuery();
             rs.next();
-            Inventory.currentDate = rs.getDate("current_date").toLocalDate();
+            Inventory.currentDate = rs.getDate("curr_date").toLocalDate();
             
             ps = con.prepareStatement("SELECT * FROM manufacturers");
             rs = ps.executeQuery();
@@ -55,6 +57,7 @@ public class Inventory {
                 int itemCount = rs.getInt("item_count");
                 Manufacturer manObj = new Manufacturer(uID, name, address, itemCount);
                 Inventory.manufacturersList.put(uID, manObj);
+                Inventory.manufacturerIDList.put(name, uID);
             }
             
             ps = con.prepareStatement("SELECT * FROM items");
@@ -102,8 +105,8 @@ public class Inventory {
     }
     
     public boolean removeItem(int itemUID){
+        int status = 0;
         try {
-            int status = 0;
             Item currItem = Inventory.itemsList.get(itemUID);
             Manufacturer currManufacturer = Inventory.manufacturersList.get(currItem.manufacturerID);
             
@@ -115,9 +118,15 @@ public class Inventory {
             ps.setInt(1, currItem.uID);
             status = ps.executeUpdate();
             
-            if(currManufacturer.itemCount == 1) {
+            currManufacturer.itemCount--;
+            ps = con.prepareStatement("UPDATE manufacturers SET item_count = ? WHERE manufacturer_uid = ?");
+            ps.setInt(1, currManufacturer.itemCount);
+            ps.setInt(2, currManufacturer.uID);
+            ps.executeUpdate();
+            if(currManufacturer.itemCount == 0) {
                 Inventory.searchMap.get(currItem.type).remove(currManufacturer.uID);
                 Inventory.manufacturersList.remove(currManufacturer.uID);
+                Inventory.manufacturerIDList.remove(currManufacturer.name);
                 
                 ps = con.prepareStatement("DELETE FROM manufacturers WHERE manufacturer_uid = ?");
                 ps.setInt(1, currManufacturer.uID);
@@ -130,20 +139,54 @@ public class Inventory {
         return (status > 0);
     }
     
+    public void endDay() {
+        try {
+            float totalDayAmount = 0;
+            for (Map.Entry<Integer, Item> e : Inventory.itemsList.entrySet()) {
+                Item currItem = e.getValue();
+                totalDayAmount += (currItem.price * currItem.daySale);
+                currItem.daySale = 0;
+            }
+            Connection con = DB.getConnection();
+            PreparedStatement ps = con.prepareStatement("UPDATE items SET day_sale = ?");
+            ps.setInt(1, 0);
+            ps.executeUpdate();
+            
+            ps = con.prepareCall("INSERT INTO sales (sale_date, total_amount) VALUES (?, ?)");
+            ps.setDate(1, java.sql.Date.valueOf(Inventory.currentDate));
+            ps.setFloat(2, totalDayAmount);
+            ps.executeUpdate();
+            
+            Inventory.currentDate = Inventory.currentDate.plusDays(1);
+            ps = con.prepareStatement("UPDATE owner SET curr_date = ?");
+            ps.setDate(1, java.sql.Date.valueOf(Inventory.currentDate));
+            ps.executeUpdate();
+            
+            ps.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(Inventory.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     public HashMap<Integer, Integer> getOrderList() {
         HashMap<Integer, Integer> orderList = new HashMap<>();
         for(Map.Entry<Integer, Item> e : Inventory.itemsList.entrySet()) {
             Item currItem = e.getValue();
             int days = Period.between(currItem.startDate, Inventory.currentDate).getDays();
+//            System.out.println(currItem.uID);
+//            System.out.println(currItem.totalSale);
+//            System.out.println("days" + days);
             int threshold = (int)((double)currItem.totalSale / days) * 7;
+            
+//            System.out.println(threshold);
+//            System.out.println();
             if(threshold > currItem.quantity)
                 orderList.put(e.getKey(), threshold - currItem.quantity);
         }
         return orderList;
     }
     
-    public static void main(String[] args) {
-        Inventory.type().retrieveData();
+    public void print() {
         
         for (Map.Entry<Integer, Manufacturer> e : Inventory.manufacturersList.entrySet()) {
             System.out.println(e.getValue());

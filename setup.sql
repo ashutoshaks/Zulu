@@ -7,7 +7,7 @@ CREATE TABLE `owner` (
     `username` VARCHAR(200) DEFAULT NULL,
     `password` VARCHAR(200) DEFAULT NULL,
     `initial_date` DATE DEFAULT NULL,
-    `current_date` DATE DEFAULT NULL,
+    `curr_date` DATE DEFAULT NULL,
     PRIMARY KEY (`uid`)
 );
 
@@ -33,4 +33,11 @@ CREATE TABLE `items` (
     FOREIGN KEY (`manufacturer_uid`) REFERENCES `manufacturers`(`manufacturer_uid`)
 );
 
-INSERT INTO `owner` (`uid`, `name`, `username`, `password`, `initial_date`, `current_date`) VALUES (1, 'Zulu Malik', 'VASachcha', 'OKZulu!', '2021-04-01', '2021-04-01');
+CREATE TABLE `sales` (
+    `day_number` INT NOT NULL AUTO_INCREMENT,
+    `sale_date` DATE DEFAULT NULL,
+    `total_amount` FLOAT(2) DEFAULT NULL,
+    PRIMARY KEY(`day_number`)
+);
+
+INSERT INTO `owner` (`uid`, `name`, `username`, `password`, `initial_date`, `curr_date`) VALUES (1, 'Zulu Malik', 'VASachcha', 'OKZulu!', '2021-04-01', '2021-04-01');

@@ -5,17 +5,22 @@
  */
 package gui;
 
+import backend.Inventory;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author achcha
  */
-public class HomePage extends javax.swing.JPanel {
+public class HomePage extends javax.swing.JFrame {
 
     /**
      * Creates new form HomePage
      */
     public HomePage() {
         initComponents();
+        getContentPane().requestFocusInWindow();
     }
 
     /**
@@ -27,19 +32,101 @@ public class HomePage extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
-        );
-    }// </editor-fold>//GEN-END:initComponents
+        jPanel1 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        HomePageProgressBar = new javax.swing.JProgressBar();
+        Percentage = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
 
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jPanel1.setBackground(java.awt.Color.white);
+
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/images/Logo.png"))); // NOI18N
+
+        HomePageProgressBar.setBackground(new java.awt.Color(156, 145, 135));
+        HomePageProgressBar.setForeground(new java.awt.Color(0, 60, 60));
+        HomePageProgressBar.setBorder(new javax.swing.border.MatteBorder(null));
+
+        Percentage.setFont(new java.awt.Font("Yrsa Medium", 0, 30)); // NOI18N
+        Percentage.setForeground(new java.awt.Color(0, 60, 60));
+        Percentage.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        Percentage.setText("%");
+        Percentage.setPreferredSize(new java.awt.Dimension(41, 41));
+
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/images/GNew.gif"))); // NOI18N
+        jLabel2.setText("jLabel2");
+        jLabel2.setPreferredSize(new java.awt.Dimension(41, 47));
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(130, 130, 130)
+                        .addComponent(jLabel1))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(50, 50, 50)
+                        .addComponent(HomePageProgressBar, javax.swing.GroupLayout.PREFERRED_SIZE, 528, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(262, 262, 262)
+                        .addComponent(Percentage, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, 0)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(50, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(jLabel1)
+                .addGap(30, 30, 30)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(Percentage, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(29, 29, 29)
+                .addComponent(HomePageProgressBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(29, Short.MAX_VALUE))
+        );
+
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+
+        pack();
+        setLocationRelativeTo(null);
+    }// </editor-fold>//GEN-END:initComponents
+    
+    public void next(){
+        Login loginScreen = new Login();
+        loginScreen.setVisible(true);
+        dispose();
+    }
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        HomePage HomePage_ = new HomePage();
+        HomePage_.setVisible(true);
+        Inventory.type().retrieveData();
+            for (int i = 1; i <= 100; i++) {
+                try {
+                    Thread.sleep(40);
+                    HomePage_.HomePageProgressBar.setValue(i);
+                    HomePage_.Percentage.setText(Integer.toString(i) + "%");
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(HomePage.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        HomePage_.next();
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JProgressBar HomePageProgressBar;
+    private javax.swing.JLabel Percentage;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
 }

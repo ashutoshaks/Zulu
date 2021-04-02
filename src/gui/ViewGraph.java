@@ -16,6 +16,7 @@ public class ViewGraph extends javax.swing.JFrame {
      */
     public ViewGraph() {
         initComponents();
+        getContentPane().requestFocusInWindow();
     }
 
     /**
@@ -65,6 +66,11 @@ public class ViewGraph extends javax.swing.JFrame {
         jButton1.setFont(new java.awt.Font("Yrsa Medium", 0, 22)); // NOI18N
         jButton1.setText("Back");
         jButton1.setPreferredSize(new java.awt.Dimension(122, 45));
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jPanel3.setBackground(java.awt.Color.white);
 
@@ -121,6 +127,13 @@ public class ViewGraph extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        Dashboard d = new Dashboard();
+        d.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments

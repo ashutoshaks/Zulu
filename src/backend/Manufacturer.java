@@ -36,6 +36,10 @@ public class Manufacturer {
         this.name = name_;
         this.address = address_;
         this.itemCount = itemCount_;
+        if(uID_ == -1) {
+            Inventory.manufacturersList.put(this.uID, this);
+            Inventory.manufacturerIDList.put(this.name, this.uID);
+        }
     }
     
     public int getUID(){
@@ -52,6 +56,10 @@ public class Manufacturer {
     
     public int getItemCount(){
         return itemCount;
+    }
+    
+    public void incrementItemCount() {
+        this.itemCount++;
     }
     
     public int save(){

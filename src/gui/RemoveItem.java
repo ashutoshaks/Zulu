@@ -4,7 +4,13 @@
  * and open the template in the editor.
  */
 package gui;
-
+import backend.Inventory;
+import backend.Item;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.ArrayList;
+import java.util.HashMap;
+import javax.swing.JOptionPane;
 /**
  *
  * @author achcha
@@ -16,6 +22,18 @@ public class RemoveItem extends javax.swing.JFrame {
      */
     public RemoveItem() {
         initComponents();
+        getContentPane().requestFocusInWindow();
+        
+        Set<String> keys = new HashSet<String>();
+        keys = Inventory.searchMap.keySet();
+        ArrayList<String> array = new ArrayList<String>(keys);
+        array.add(0, "None");
+        String[] arr = new String[array.size()];
+        arr = array.toArray(arr);
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(arr));
+        String[] initial = {"None"};
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(initial));
+        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(initial));
     }
 
     /**
@@ -33,8 +51,8 @@ public class RemoveItem extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
         jComboBox2 = new javax.swing.JComboBox<>();
+        jComboBox1 = new javax.swing.JComboBox<>();
         jComboBox3 = new javax.swing.JComboBox<>();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
@@ -82,13 +100,23 @@ public class RemoveItem extends javax.swing.JFrame {
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel4.setText("Vehical Type");
 
-        jComboBox1.setBackground(java.awt.Color.white);
-        jComboBox1.setFont(new java.awt.Font("Yrsa Medium", 0, 18)); // NOI18N
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
         jComboBox2.setBackground(java.awt.Color.white);
         jComboBox2.setFont(new java.awt.Font("Yrsa Medium", 0, 18)); // NOI18N
         jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBox2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox2ActionPerformed(evt);
+            }
+        });
+
+        jComboBox1.setBackground(java.awt.Color.white);
+        jComboBox1.setFont(new java.awt.Font("Yrsa Medium", 0, 18)); // NOI18N
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox1ActionPerformed(evt);
+            }
+        });
 
         jComboBox3.setBackground(java.awt.Color.white);
         jComboBox3.setFont(new java.awt.Font("Yrsa Medium", 0, 18)); // NOI18N
@@ -98,11 +126,21 @@ public class RemoveItem extends javax.swing.JFrame {
         jButton1.setFont(new java.awt.Font("Yrsa Medium", 0, 22)); // NOI18N
         jButton1.setText("Remove");
         jButton1.setPreferredSize(new java.awt.Dimension(130, 45));
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setBackground(java.awt.Color.white);
         jButton2.setFont(new java.awt.Font("Yrsa Medium", 0, 22)); // NOI18N
         jButton2.setText("Back");
         jButton2.setPreferredSize(new java.awt.Dimension(130, 45));
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -114,15 +152,15 @@ public class RemoveItem extends javax.swing.JFrame {
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel3))
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel4))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 70, Short.MAX_VALUE)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jComboBox2, javax.swing.GroupLayout.Alignment.TRAILING, 0, 148, Short.MAX_VALUE)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jComboBox1, javax.swing.GroupLayout.Alignment.TRAILING, 0, 148, Short.MAX_VALUE)
+                            .addComponent(jComboBox2, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jComboBox3, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(54, 54, 54))
@@ -130,23 +168,23 @@ public class RemoveItem extends javax.swing.JFrame {
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(55, 55, 55)
+                .addGap(42, 42, 42)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(40, 40, 40)
+                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(30, 30, 30)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(40, 40, 40)
+                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3))
+                .addGap(31, 31, 31)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(40, 40, 40)
+                    .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 56, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(38, Short.MAX_VALUE))
+                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(54, 54, 54))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -167,6 +205,83 @@ public class RemoveItem extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        Dashboard dashboardScreen = new Dashboard();
+        dashboardScreen.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        if(jComboBox1.getSelectedItem() == "None"){
+            JOptionPane.showMessageDialog(null, "Item Type Cannot be Empty", "ERROR", JOptionPane.ERROR_MESSAGE);
+        }
+        else if(jComboBox2.getSelectedItem() == "None"){
+            JOptionPane.showMessageDialog(null, "Manufacturer Cannot be Empty", "ERROR", JOptionPane.ERROR_MESSAGE);
+        }
+        else if(jComboBox3.getSelectedItem() == "None"){
+            JOptionPane.showMessageDialog(null, "Vehicle Type Cannot be Empty", "ERROR", JOptionPane.ERROR_MESSAGE);
+        }
+        else{
+            Item itemObj = Inventory.searchMap.get(jComboBox1.getSelectedItem()).get(Inventory.manufacturerIDList.get(jComboBox2.getSelectedItem())).get(jComboBox3.getSelectedItem());
+            Inventory.type().removeItem(itemObj.getUID());
+            JOptionPane.showMessageDialog(null, "Item Successfully Removed", "SUCCESS", JOptionPane.INFORMATION_MESSAGE);
+            String[] initial = {"None"};
+            Set<String> keys = new HashSet<String>();
+            keys = Inventory.searchMap.keySet();
+            ArrayList<String> array = new ArrayList<String>(keys);
+            array.add(0, "None");
+            String[] arr = new String[array.size()];
+            arr = array.toArray(arr);
+            jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(arr));
+            jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(initial));
+            jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(initial));
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+        // TODO add your handling code here:
+        if(jComboBox1.getSelectedItem() != "None")
+        {
+            Set<Integer> keys = new HashSet<Integer>();
+            keys = Inventory.searchMap.get(jComboBox1.getSelectedItem()).keySet();
+            ArrayList<Integer> array1 = new ArrayList<Integer>(keys);
+            ArrayList<String> array2 = new ArrayList<String>();
+            for(int i = 0; i<array1.size(); i++)
+                array2.add(Inventory.manufacturersList.get(array1.get(i)).getName());
+            array2.add(0, "None");
+            String[] arr = new String[array2.size()];
+            arr = array2.toArray(arr);
+            jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(arr));
+        }
+        else
+        {
+            String[] initial = {"None"};
+            jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(initial));
+            jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(initial));
+        }
+    }//GEN-LAST:event_jComboBox1ActionPerformed
+
+    private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
+        // TODO add your handling code here:
+        if(jComboBox2.getSelectedItem() != "None")
+        {
+            Set<String> keys = new HashSet<String>();
+            keys = Inventory.searchMap.get(jComboBox1.getSelectedItem()).get(Inventory.manufacturerIDList.get(jComboBox2.getSelectedItem())).keySet();
+            ArrayList<String> array = new ArrayList<String>(keys);
+            array.add(0, "None");
+            String[] arr = new String[array.size()];
+            arr = array.toArray(arr);
+            jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(arr));
+        }
+        else
+        {
+            String[] initial = {"None"};
+            jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(initial));
+        }
+    }//GEN-LAST:event_jComboBox2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -196,6 +311,7 @@ public class RemoveItem extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
+//        Inventory.type().retrieveData();
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new RemoveItem().setVisible(true);

@@ -47,6 +47,8 @@ public class Item {
         this.manufacturerID = manufacturerID_;
         this.vehicleType = vehicleType_;
         this.startDate = startDate_;
+        if(uID_ == -1)
+            Inventory.itemsList.put(this.uID, this);
     }
     
     public int getUID(){
@@ -57,7 +59,7 @@ public class Item {
         return type;
     }
     
-    public double getPrice(){
+    public float getPrice(){
         return price;
     }
     

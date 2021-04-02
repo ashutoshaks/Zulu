@@ -5,6 +5,13 @@
  */
 package gui;
 
+import backend.Inventory;
+import backend.Item;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author achcha
@@ -16,6 +23,18 @@ public class ReportSale extends javax.swing.JFrame {
      */
     public ReportSale() {
         initComponents();
+        getContentPane().requestFocusInWindow();
+        
+        Set<String> keys = new HashSet<String>();
+        keys = Inventory.searchMap.keySet();
+        ArrayList<String> array = new ArrayList<String>(keys);
+        array.add(0, "None");
+        String[] arr = new String[array.size()];
+        arr = array.toArray(arr);
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(arr));
+        String[] initial = {"None"};
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(initial));
+        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(initial));
     }
 
     /**
@@ -73,14 +92,33 @@ public class ReportSale extends javax.swing.JFrame {
 
         jComboBox1.setFont(new java.awt.Font("Yrsa Medium", 0, 18)); // NOI18N
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox1ActionPerformed(evt);
+            }
+        });
 
         jComboBox2.setFont(new java.awt.Font("Yrsa Medium", 0, 18)); // NOI18N
         jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBox2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox2ActionPerformed(evt);
+            }
+        });
 
         jComboBox3.setFont(new java.awt.Font("Yrsa Medium", 0, 18)); // NOI18N
         jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jTextField1.setFont(new java.awt.Font("Yrsa Medium", 0, 18)); // NOI18N
+        jTextField1.setText("Enter Quantity");
+        jTextField1.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                jTextField1FocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jTextField1FocusLost(evt);
+            }
+        });
         jTextField1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField1ActionPerformed(evt);
@@ -197,6 +235,53 @@ public class ReportSale extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+        if(jComboBox1.getSelectedItem() == "None")
+            JOptionPane.showMessageDialog(null, "Item Type Cannot be Empty", "ERROR", JOptionPane.ERROR_MESSAGE);
+        
+        else if(jComboBox2.getSelectedItem() == "None")
+            JOptionPane.showMessageDialog(null, "Manufacturer Cannot be Empty", "ERROR", JOptionPane.ERROR_MESSAGE);
+        
+        else if(jComboBox3.getSelectedItem() == "None")
+            JOptionPane.showMessageDialog(null, "Vehicle Type Cannot be Empty", "ERROR", JOptionPane.ERROR_MESSAGE);
+        
+        else if(jTextField1.getText() == "")
+            JOptionPane.showMessageDialog(null, "Quantity Sold Cannot be Empty", "ERROR", JOptionPane.ERROR_MESSAGE);
+   
+        else{
+            Item currItem = Inventory.searchMap.get(jComboBox1.getSelectedItem()).get(Inventory.manufacturerIDList.get(jComboBox2.getSelectedItem())).get(jComboBox3.getSelectedItem());
+            try {
+                int sold = Integer.parseInt(jTextField1.getText());
+                if(sold == 0)
+                    JOptionPane.showMessageDialog(null, "Quantity Sold Cannot be Zero", "ERROR", JOptionPane.ERROR_MESSAGE);
+                else if(sold < 0)
+                    JOptionPane.showMessageDialog(null, "Quantity Sold Cannot be Negative", "ERROR", JOptionPane.ERROR_MESSAGE);
+                else if(currItem.getQuantity() < sold)
+                    JOptionPane.showMessageDialog(null, "Quantity is Not Enough in the Inventory", "ERROR", JOptionPane.ERROR_MESSAGE);
+                else{
+                    boolean flag = currItem.updateSale(sold);
+                    if(flag){
+                        float paid = currItem.getPrice() * sold;
+                        JOptionPane.showMessageDialog(null, "Sale Successful\nAmount to be Paid = Rs." + Float.toString(paid), "SUCCESS", JOptionPane.INFORMATION_MESSAGE);
+                    }                        
+                    else
+                        JOptionPane.showMessageDialog(null, "Sale Unsuccessful", "ERROR", JOptionPane.ERROR_MESSAGE);
+                    
+                    Set<String> keys = new HashSet<String>();
+                    keys = Inventory.searchMap.keySet();
+                    ArrayList<String> array = new ArrayList<String>(keys);
+                    array.add(0, "None");
+                    String[] arr = new String[array.size()];
+                    arr = array.toArray(arr);
+                    String[] initial = {"None"};
+                    jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(arr));
+                    jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(initial));
+                    jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(initial));
+                    jTextField1.setText("Enter Quantity");
+                }
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "Quantity Entered should be a number", "ERROR", JOptionPane.ERROR_MESSAGE);
+            }            
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
@@ -205,7 +290,66 @@ public class ReportSale extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
+        Dashboard d = new Dashboard();
+        d.setVisible(true);
+        dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+        // TODO add your handling code here:
+        if(jComboBox1.getSelectedItem() != "None")
+        {
+            Set<Integer> keys = new HashSet<Integer>();
+            keys = Inventory.searchMap.get(jComboBox1.getSelectedItem()).keySet();
+            ArrayList<Integer> array1 = new ArrayList<Integer>(keys);
+            ArrayList<String> array2 = new ArrayList<String>();
+            for(int i = 0; i<array1.size(); i++)
+            {
+                array2.add(Inventory.manufacturersList.get(array1.get(i)).getName());
+            }
+            array2.add(0, "None");
+            String[] arr = new String[array2.size()];
+            arr = array2.toArray(arr);
+            jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(arr));
+        }
+        else
+        {
+            String[] initial = {"None"};
+            jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(initial));
+            jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(initial));
+        }
+    }//GEN-LAST:event_jComboBox1ActionPerformed
+
+    private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
+        // TODO add your handling code here:
+        if(jComboBox2.getSelectedItem() != "None")
+        {
+            Set<String> keys = new HashSet<String>();
+            keys = Inventory.searchMap.get(jComboBox1.getSelectedItem()).get(Inventory.manufacturerIDList.get(jComboBox2.getSelectedItem())).keySet();
+            ArrayList<String> array = new ArrayList<String>(keys);
+            array.add(0, "None");
+            String[] arr = new String[array.size()];
+            arr = array.toArray(arr);
+            jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(arr));
+        }
+        else
+        {
+            String[] initial = {"None"};
+            jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(initial));
+        }
+    }//GEN-LAST:event_jComboBox2ActionPerformed
+
+    private void jTextField1FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField1FocusGained
+        // TODO add your handling code here:
+        if(jTextField1.getText().equals("Enter Quantity"))
+            jTextField1.setText("");
+    }//GEN-LAST:event_jTextField1FocusGained
+
+    private void jTextField1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField1FocusLost
+        // TODO add your handling code here:
+        if(jTextField1.getText().equals(""))
+            jTextField1.setText("Enter Quantity");
+    }//GEN-LAST:event_jTextField1FocusLost
 
     /**
      * @param args the command line arguments
@@ -235,6 +379,7 @@ public class ReportSale extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
+//        Inventory.type().retrieveData();
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new ReportSale().setVisible(true);
