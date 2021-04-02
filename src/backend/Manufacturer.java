@@ -24,11 +24,11 @@ public class Manufacturer {
     String address;
     int itemCount;
     
-    static int nextUID = 1;
+    static int nextUID = 0;
     
     public Manufacturer(int uID_, String name_, String address_, int itemCount_) {
         if(uID_ == -1) 
-            this.uID = Manufacturer.nextUID++;
+            this.uID = ++Manufacturer.nextUID;
         else {
             this.uID = uID_;
             Manufacturer.nextUID = max(Manufacturer.nextUID, uID_);

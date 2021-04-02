@@ -11,6 +11,19 @@ import java.awt.Font;
 import java.util.HashMap;
 import javax.swing.table.DefaultTableModel;
 
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.GrayColor;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author achcha
@@ -20,6 +33,10 @@ public class GenerateOrderList extends javax.swing.JFrame {
     /**
      * Creates new form GenerateOrderList
      */
+    
+    private Document document;
+    private PdfWriter writer;
+    
     public GenerateOrderList() {
         initComponents();
         getContentPane().requestFocusInWindow();
@@ -60,6 +77,37 @@ public class GenerateOrderList extends javax.swing.JFrame {
             dtm.addRow(new Object[] {currItem.getType(), Inventory.manufacturersList.get(currItem.getManufacturerID()).getName(), Inventory.manufacturersList.get(currItem.getManufacturerID()).getAddress(),
                 currItem.getVehicleType(), Integer.toString(orderNum)});
         }        
+    }
+    
+    public void openPdf() throws FileNotFoundException, DocumentException {
+        document = new Document(PageSize.A4, 30, 30, 30, 30);
+        writer = PdfWriter.getInstance(document, new FileOutputStream("orderList.pdf"));
+        document.open();
+    }
+    
+    public void closePdf() {
+        document.close();
+    }
+    public void addData(PdfPTable pdfTable) {
+        pdfTable.setHeaderRows(1);
+        
+        for(int i = 0; i < 5; i++) {
+            PdfPCell cell = new PdfPCell(new Paragraph(jTable1.getColumnName(i)));
+            cell.setBackgroundColor(new GrayColor(0.7f));
+            pdfTable.addCell(cell);
+        }
+
+        for (int i = 0; i < jTable1.getRowCount(); i++) {
+            for (int j = 0; j < jTable1.getColumnCount(); j++) {
+                pdfTable.addCell(jTable1.getModel().getValueAt(i, j).toString());
+            }
+        }
+
+        try {
+            document.add(pdfTable);
+        } catch (DocumentException ex) {
+            Logger.getLogger(GenerateOrderList.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -196,7 +244,17 @@ public class GenerateOrderList extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+        try {
+            // TODO add your handling code here:
+            PdfPTable pdfTable = new PdfPTable(jTable1.getColumnCount());
+            openPdf();
+            addData(pdfTable);
+            closePdf();
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(GenerateOrderList.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (DocumentException ex) {
+            Logger.getLogger(GenerateOrderList.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed

@@ -30,11 +30,11 @@ public class Item {
     String vehicleType;
     LocalDate startDate;
     
-    static int nextUID = 1;
+    static int nextUID = 0;
     
     public Item(int uID_, String type_, float price_, int quantity_, int daySale_, int totalSale_, int manufacturerID_, String vehicleType_, LocalDate startDate_) {
         if(uID_ == -1) 
-            this.uID = Item.nextUID++;
+            this.uID = ++Item.nextUID;
         else {
             this.uID = uID_;
             Item.nextUID = max(Item.nextUID, uID_);

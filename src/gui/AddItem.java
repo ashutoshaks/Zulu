@@ -39,6 +39,8 @@ public class AddItem extends javax.swing.JFrame {
                 ok = true;
             else if(check.charAt(i) == '&')
                 ok = true;
+            else if(check.charAt(i) == ' ')
+                ok = true;
             else
                 return false;
         }
@@ -64,28 +66,35 @@ public class AddItem extends javax.swing.JFrame {
     
     private static boolean isValidQuantity(String Quantity)
     {
-        for(int i = 0; i < Quantity.length(); i++)
-            if(!Character.isDigit(Quantity.charAt(i)))
-                return false;
-            else if(Integer.parseInt(Quantity) == 0)
-                return false;
-        return true;
+        try {
+            int quantity = Integer.parseInt(Quantity);
+            if(quantity > 0)
+                return true;
+        } catch (NumberFormatException e) {
+            return false;
+//            JOptionPane.showMessageDialog(null, "Quantity Entered should be a number", "ERROR", JOptionPane.ERROR_MESSAGE);
+        }
+        return false;
     }
     
     private static boolean isValidPrice(String Price)
     {
         try
         {
-          Float.parseFloat(Price);
-          float price = Float.parseFloat(Price);
-          if(price <= 0)
-              return false;
-          else
-            return true;
+            
+            Float.parseFloat(Price);
+            float price = Float.parseFloat(Price);
+            if(price <= 0)
+                return false;
+            else
+                return true;
         }
         catch(NumberFormatException e)
         {
+            if(Integer.parseInt(Price) >= 0)
+                return true;
           //not a double
+          else
             return false;
         }
     }
@@ -106,7 +115,7 @@ public class AddItem extends javax.swing.JFrame {
 
         Set<String> ManufacturerSet = new HashSet<String>();
         ManufacturerSet = Inventory.manufacturerIDList.keySet();
-        ArrayList<String> arrayManufacturer = new ArrayList<String>(ItemTypeSet);
+        ArrayList<String> arrayManufacturer = new ArrayList<String>(ManufacturerSet);
         arrayManufacturer.add(0, "None");
         arrayManufacturer.add((Integer) (arrayManufacturer.size()), "Add a new manufacturer");
         String[] arrM = new String[arrayManufacturer.size()];
@@ -273,7 +282,6 @@ public class AddItem extends javax.swing.JFrame {
         jComboBox3.setBackground(java.awt.Color.white);
         jComboBox3.setFont(new java.awt.Font("Yrsa Medium", 0, 18)); // NOI18N
         jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jComboBox3.setPreferredSize(new java.awt.Dimension(110, 42));
         jComboBox3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBox3ActionPerformed(evt);
@@ -367,10 +375,11 @@ public class AddItem extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(ManufacturerAddressTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(VehicleTypeTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel3)
+                        .addComponent(VehicleTypeTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
@@ -468,17 +477,21 @@ public class AddItem extends javax.swing.JFrame {
             }
             else
             {
-                ItemType = ItemTypeTextField.getSelectedText();
+                ItemType = ItemTypeTextField.getText();
+                ItemTypeTextField.setText("");
             }
             
             String ManufacturerName = "";
             int ManufacturerID;
             if(jComboBox2.getSelectedItem() == "Add a new manufacturer")
             {
-                ManufacturerName = ManufacturerNameTextField.getSelectedText();
-                String ManufacturerAddress = ManufacturerAddressTextField.getSelectedText();
+                ManufacturerName = ManufacturerNameTextField.getText();
+                String ManufacturerAddress = ManufacturerAddressTextField.getText();
                 AddThisManufacturer(ManufacturerName, ManufacturerAddress);
                 ManufacturerID = Inventory.manufacturerIDList.get(ManufacturerName);
+                
+                ManufacturerNameTextField.setText("");
+                ManufacturerAddressTextField.setText("");
             }
             else
             {
@@ -494,12 +507,13 @@ public class AddItem extends javax.swing.JFrame {
             }
             else
             {
-                VehicleType = VehicleTypeTextField.getSelectedText();
+                VehicleType = VehicleTypeTextField.getText();
+                VehicleTypeTextField.setText("");
             }
             
-            int quantity = Integer.parseInt(QuantityTextField.getSelectedText());
+            int quantity = Integer.parseInt(QuantityTextField.getText());
             
-            float price = Float.parseFloat(PriceTextField.getSelectedText());
+            float price = Float.parseFloat(PriceTextField.getText());
             
             if(!AddThisItem(ItemType, ManufacturerID, VehicleType, quantity, price))
             {
@@ -508,39 +522,44 @@ public class AddItem extends javax.swing.JFrame {
             else
             {
                 JOptionPane.showMessageDialog(null, "Item is successfully added to the inventory!", "ERROR", JOptionPane.ERROR_MESSAGE);
-                
-                QuantityTextField.setText("");
-                PriceTextField.setText("");
-                
-                Set<String> ItemTypeSet = new HashSet<String>();
-                ItemTypeSet = Inventory.searchMap.keySet();
-                ArrayList<String> arrayItemType = new ArrayList<String>(ItemTypeSet);
-                arrayItemType.add(0, "None");
-                arrayItemType.add((Integer) (arrayItemType.size()), "Add new item type");
-                String[] arrI = new String[arrayItemType.size()];
-                arrI = arrayItemType.toArray(arrI);
-                jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(arrI));
-
-                Set<String> ManufacturerSet = new HashSet<String>();
-                ManufacturerSet = Inventory.manufacturerIDList.keySet();
-                ArrayList<String> arrayManufacturer = new ArrayList<String>(ItemTypeSet);
-                arrayManufacturer.add(0, "None");
-                arrayManufacturer.add((Integer) (arrayManufacturer.size()), "Add a new manufacturer");
-                String[] arrM = new String[arrayManufacturer.size()];
-                arrM = arrayManufacturer.toArray(arrM);
-                jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(arrM));
-
-                Set<String> VehicleSet = new HashSet<String>();
-                for (Map.Entry<Integer, Item> e : Inventory.itemsList.entrySet()) {
-                    VehicleSet.add(e.getValue().getVehicleType());
-                }
-                ArrayList<String> arrayVehicle = new ArrayList<String>(VehicleSet);
-                arrayVehicle.add(0, "None");
-                arrayVehicle.add((Integer) (arrayVehicle.size()), "Add new vehicle type");
-                String[] arrV = new String[arrayVehicle.size()];
-                arrV = arrayVehicle.toArray(arrV);
-                jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(arrV));
             }
+            
+            QuantityTextField.setText("");
+            PriceTextField.setText("");
+
+            ItemTypeTextField.setEnabled(false);
+            ManufacturerNameTextField.setEnabled(false);
+            ManufacturerAddressTextField.setEnabled(false);
+            VehicleTypeTextField.setEnabled(false);
+
+            Set<String> ItemTypeSet = new HashSet<String>();
+            ItemTypeSet = Inventory.searchMap.keySet();
+            ArrayList<String> arrayItemType = new ArrayList<String>(ItemTypeSet);
+            arrayItemType.add(0, "None");
+            arrayItemType.add((Integer) (arrayItemType.size()), "Add new item type");
+            String[] arrI = new String[arrayItemType.size()];
+            arrI = arrayItemType.toArray(arrI);
+            jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(arrI));
+
+            Set<String> ManufacturerSet = new HashSet<String>();
+            ManufacturerSet = Inventory.manufacturerIDList.keySet();
+            ArrayList<String> arrayManufacturer = new ArrayList<String>(ManufacturerSet);
+            arrayManufacturer.add(0, "None");
+            arrayManufacturer.add((Integer) (arrayManufacturer.size()), "Add a new manufacturer");
+            String[] arrM = new String[arrayManufacturer.size()];
+            arrM = arrayManufacturer.toArray(arrM);
+            jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(arrM));
+
+            Set<String> VehicleSet = new HashSet<String>();
+            for (Map.Entry<Integer, Item> e : Inventory.itemsList.entrySet()) {
+                VehicleSet.add(e.getValue().getVehicleType());
+            }
+            ArrayList<String> arrayVehicle = new ArrayList<String>(VehicleSet);
+            arrayVehicle.add(0, "None");
+            arrayVehicle.add((Integer) (arrayVehicle.size()), "Add new vehicle type");
+            String[] arrV = new String[arrayVehicle.size()];
+            arrV = arrayVehicle.toArray(arrV);
+            jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(arrV));
         }
     }//GEN-LAST:event_AddItemButtonActionPerformed
 
@@ -553,6 +572,9 @@ public class AddItem extends javax.swing.JFrame {
     
     private static boolean AddThisItem(String ItemType, int ManufacturerID, String VehicleType, int quantity, float price)
     {
+        System.out.println(ItemType);
+        System.out.println(ManufacturerID);
+        System.out.println(VehicleType);
         if(Inventory.searchMap.containsKey(ItemType))
         {
             if(Inventory.searchMap.get(ItemType).containsKey(ManufacturerID))
@@ -561,11 +583,9 @@ public class AddItem extends javax.swing.JFrame {
                     return false;
             }
         }
-        else
-        {
-            Item newItem = new Item(-1, ItemType, price, quantity, 0, 0, ManufacturerID, VehicleType, Inventory.currentDate);
-            newItem.save();
-        }
+        System.out.println("gui.AddItem.AddThisItem()");
+        Item newItem = new Item(-1, ItemType, price, quantity, 0, 0, ManufacturerID, VehicleType, Inventory.currentDate);
+        newItem.save();
         return true;
     }
     
@@ -575,9 +595,9 @@ public class AddItem extends javax.swing.JFrame {
 
     private void BackButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BackButtonActionPerformed
         // TODO add your handling code here:
-//        Dashboard d = new Dashboard();
-//        d.setVisible(true);
-//        dispose();
+        Dashboard d = new Dashboard();
+        d.setVisible(true);
+        dispose();
     }//GEN-LAST:event_BackButtonActionPerformed
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
@@ -656,6 +676,7 @@ public class AddItem extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
+        Inventory.type().retrieveData();
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new AddItem().setVisible(true);
