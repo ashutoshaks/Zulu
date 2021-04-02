@@ -17,6 +17,7 @@ import java.util.logging.Logger;
  *
  * @author achcha
  */
+
 public class Owner {
     String name;
     String username;

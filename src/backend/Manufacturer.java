@@ -12,10 +12,12 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 /**
  *
  * @author achcha
  */
+
 public class Manufacturer {
     int uID;
     String name;
@@ -85,7 +87,7 @@ public class Manufacturer {
     
     @Override
     public String toString() {
-        String outString = "id = " + uID + ", name = " + name + ", address = " + address + ", itemcount = " + itemCount;
+        String outString = "Manufacturer ID = " + uID + "\nName = " + name + "\nAddress = " + address + "\nItem Count = " + itemCount + "\n";
         return outString;
     }
 }

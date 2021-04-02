@@ -4,11 +4,21 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/home/ashutosh/Zulu/src/backend/Inventory.java</file>
-            <file>file:/home/ashutosh/Zulu/src/backend/Owner.java</file>
-            <file>file:/home/ashutosh/Zulu/src/controller/DB.java</file>
-            <file>file:/home/ashutosh/Zulu/src/backend/Manufacturer.java</file>
-            <file>file:/home/ashutosh/Zulu/src/gui/Dashboard.java</file>
+            <file>file:/home/ashutosh/Zulu/src/gui/AddItem.java</file>
+            <file>file:/home/ashutosh/Zulu/src/gui/ReportSale.java</file>
+            <file>file:/home/ashutosh/Zulu/src/gui/ViewGraph.java</file>
             <file>file:/home/ashutosh/Zulu/src/backend/Item.java</file>
+            <file>file:/home/ashutosh/Zulu/src/gui/HomePage.java</file>
+            <file>file:/home/ashutosh/Zulu/src/backend/Owner.java</file>
+            <file>file:/home/ashutosh/Zulu/src/gui/Login.java</file>
+            <file>file:/home/ashutosh/Zulu/src/controller/DB.java</file>
+            <file>file:/home/ashutosh/Zulu/src/gui/EndDay.java</file>
+            <file>file:/home/ashutosh/Zulu/src/backend/Manufacturer.java</file>
+            <file>file:/home/ashutosh/Zulu/src/gui/ViewInventory.java</file>
+            <file>file:/home/ashutosh/Zulu/src/gui/ViewSales.java</file>
+            <file>file:/home/ashutosh/Zulu/src/gui/Dashboard.java</file>
+            <file>file:/home/ashutosh/Zulu/src/gui/GenerateOrderList.java</file>
+            <file>file:/home/ashutosh/Zulu/src/gui/RemoveItem.java</file>
         </group>
     </open-files>
 </project-private>

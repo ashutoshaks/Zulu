@@ -114,12 +114,34 @@ public class Item {
     }
     
     public boolean updateSale(int numSold){
-        return true;
+        if(numSold > this.quantity)
+            return false;
+        else {
+            try {
+                this.quantity -= numSold;
+                this.daySale += numSold;
+                this.totalSale += numSold;
+                
+                Connection con = DB.getConnection();
+                PreparedStatement ps = con.prepareStatement("UPDATE items SET quantity = ?, day_sale = ?, total_sale = ? WHERE item_uid = ?");
+                ps.setInt(1, this.quantity);
+                ps.setInt(2, this.daySale);
+                ps.setInt(3, this.totalSale);
+                ps.setInt(4, this.uID);
+                int status = ps.executeUpdate();
+                ps.close();
+                return (status > 0);
+            } catch (SQLException ex) {
+                Logger.getLogger(Item.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            return false;
+        }
     }
     
     @Override
     public String toString() {
-        String outString = "id = " + uID + ", type = " + type + ", price = " + price + ", quantity = " + quantity + ", daysale = " + daySale + ", totalsale = " + totalSale + ", manid = " + manufacturerID + ", vehicletype = " + vehicleType + ", startdate = " + startDate;
+        String outString = "Item ID = " + uID + "\nType = " + type + "\nPrice = " + price + "\nQuantity = " + quantity + "\nDaysale = " + daySale + 
+                "\nTotal Sale = " + totalSale + "\nManufaturer ID = " + manufacturerID + "\nVehicle Type = " + vehicleType + "\nStart Date = " + startDate + "\n";
         return outString;
     }
 }

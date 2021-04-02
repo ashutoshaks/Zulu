@@ -13,6 +13,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.Period;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -20,11 +21,20 @@ import java.util.logging.Logger;
  *
  * @author achcha
  */
+
 public class Inventory {
     static HashMap<String, HashMap<Integer, HashMap<String, Item>>> searchMap = new HashMap<String, HashMap<Integer, HashMap<String, Item>>>();
     static HashMap<Integer, Item> itemsList = new HashMap<Integer, Item>();
     static HashMap<Integer, Manufacturer> manufacturersList = new HashMap<Integer, Manufacturer>();
     static LocalDate currentDate;
+    
+    private static Inventory instance = null;
+    
+    public static Inventory type() {
+        if(instance == null)
+            instance = new Inventory();
+        return instance;
+    }
     
     public void retrieveData(){
         try {
@@ -89,40 +99,74 @@ public class Inventory {
         } catch (SQLException ex) {
             Logger.getLogger(Inventory.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        
     }
     
-    public boolean removeItem(){
-        return true;
+    public boolean removeItem(int itemUID){
+        try {
+            int status = 0;
+            Item currItem = Inventory.itemsList.get(itemUID);
+            Manufacturer currManufacturer = Inventory.manufacturersList.get(currItem.manufacturerID);
+            
+            Inventory.searchMap.get(currItem.type).get(currItem.manufacturerID).remove(currItem.vehicleType);
+            Inventory.itemsList.remove(currItem.uID);
+            
+            Connection con = DB.getConnection();
+            PreparedStatement ps = con.prepareStatement("DELETE FROM items WHERE item_uid = ?");
+            ps.setInt(1, currItem.uID);
+            status = ps.executeUpdate();
+            
+            if(currManufacturer.itemCount == 1) {
+                Inventory.searchMap.get(currItem.type).remove(currManufacturer.uID);
+                Inventory.manufacturersList.remove(currManufacturer.uID);
+                
+                ps = con.prepareStatement("DELETE FROM manufacturers WHERE manufacturer_uid = ?");
+                ps.setInt(1, currManufacturer.uID);
+                status = ps.executeUpdate();
+            }
+            ps.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(Inventory.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return (status > 0);
     }
     
-//    public static void main(String[] args) {
-//        Inventory ob = new Inventory();
-//        ob.retrieveData();
-//        
-//        for (Map.Entry<Integer, Manufacturer> e : Inventory.manufacturersList.entrySet()) {
-//            System.out.println(e.getValue());
-//        }
-//        System.out.println("");
-//
-//        
-//        for (Map.Entry<Integer, Item> e : Inventory.itemsList.entrySet()) {
-//            System.out.println(e.getValue());
-//        }
-//        System.out.println("");
-//        
-//        for (Map.Entry<String, HashMap<Integer, HashMap<String, Item>>> e : Inventory.searchMap.entrySet()) {
-//            for(Map.Entry<Integer, HashMap<String, Item>> f : e.getValue().entrySet()) {
-//                for(Map.Entry<String, Item> g : f.getValue().entrySet()) {
-//                    System.out.println(e.getKey());
-//                    System.out.println(f.getKey());
-//                    System.out.println(g.getKey());
-//                    System.out.println(g.getValue());
-//                    System.out.println("");
-//                }
-//            }
-//        }
-//    }
+    public HashMap<Integer, Integer> getOrderList() {
+        HashMap<Integer, Integer> orderList = new HashMap<>();
+        for(Map.Entry<Integer, Item> e : Inventory.itemsList.entrySet()) {
+            Item currItem = e.getValue();
+            int days = Period.between(currItem.startDate, Inventory.currentDate).getDays();
+            int threshold = (int)((double)currItem.totalSale / days) * 7;
+            if(threshold > currItem.quantity)
+                orderList.put(e.getKey(), threshold - currItem.quantity);
+        }
+        return orderList;
+    }
+    
+    public static void main(String[] args) {
+        Inventory.type().retrieveData();
+        
+        for (Map.Entry<Integer, Manufacturer> e : Inventory.manufacturersList.entrySet()) {
+            System.out.println(e.getValue());
+        }
+        System.out.println("");
+
+        
+        for (Map.Entry<Integer, Item> e : Inventory.itemsList.entrySet()) {
+            System.out.println(e.getValue());
+        }
+        System.out.println("");
+        
+        for (Map.Entry<String, HashMap<Integer, HashMap<String, Item>>> e : Inventory.searchMap.entrySet()) {
+            for(Map.Entry<Integer, HashMap<String, Item>> f : e.getValue().entrySet()) {
+                for(Map.Entry<String, Item> g : f.getValue().entrySet()) {
+                    System.out.println(e.getKey());
+                    System.out.println(f.getKey());
+                    System.out.println(g.getKey());
+                    System.out.println(g.getValue());
+                    System.out.println("");
+                }
+            }
+        }
+    }
 }
 
