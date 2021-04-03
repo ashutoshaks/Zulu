@@ -98,7 +98,7 @@ public class Item {
         } catch (SQLException ex) {
             Logger.getLogger(Item.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return status;
+        return ((status > 0) ? 1 : 0);
     }
     
     public int delete(){

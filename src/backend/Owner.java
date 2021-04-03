@@ -23,6 +23,21 @@ public class Owner {
     String username;
     String password;
     
+    private static Owner instance = null;
+
+    private Owner() {
+        this.name = "Zulu Malik";
+        this.username = "VASachcha";
+        this.password = "OKZulu!";
+    }
+    
+    public static Owner type() {
+        if(instance == null)
+            instance = new Owner();
+        return instance;
+    }
+    
+    
     public String getName(){
         return name;
     }
@@ -39,7 +54,7 @@ public class Owner {
         this.username = username;
     }
     
-    public boolean validate(String username, String password){
+    public static boolean validate(String username, String password){
         boolean flag = false;
         try {
             Connection con = DB.getConnection();

@@ -39,7 +39,7 @@ public class Inventory {
     }
     
     public void retrieveData(){
-        System.out.println("backend.Inventory.retrieveData() pe aa gaya");
+//        System.out.println("backend.Inventory.retrieveData() pe aa gaya");
         try {
             Connection con = DB.getConnection();
             PreparedStatement ps;
@@ -175,13 +175,7 @@ public class Inventory {
         for(Map.Entry<Integer, Item> e : Inventory.itemsList.entrySet()) {
             Item currItem = e.getValue();
             int days = Period.between(currItem.startDate, Inventory.currentDate).getDays();
-//            System.out.println(currItem.uID);
-//            System.out.println(currItem.totalSale);
-//            System.out.println("days" + days);
             int threshold = (int)((double)currItem.totalSale / days) * 7;
-            
-//            System.out.println(threshold);
-//            System.out.println();
             if(threshold > currItem.quantity) {
                 orderList.put(e.getKey(), threshold - currItem.quantity);
                 currItem.quantity = threshold;
@@ -189,31 +183,4 @@ public class Inventory {
         }
         return orderList;
     }
-    
-    public void print() {
-        
-        for (Map.Entry<Integer, Manufacturer> e : Inventory.manufacturersList.entrySet()) {
-            System.out.println(e.getValue());
-        }
-        System.out.println("");
-
-        
-        for (Map.Entry<Integer, Item> e : Inventory.itemsList.entrySet()) {
-            System.out.println(e.getValue());
-        }
-        System.out.println("");
-        
-        for (Map.Entry<String, HashMap<Integer, HashMap<String, Item>>> e : Inventory.searchMap.entrySet()) {
-            for(Map.Entry<Integer, HashMap<String, Item>> f : e.getValue().entrySet()) {
-                for(Map.Entry<String, Item> g : f.getValue().entrySet()) {
-                    System.out.println(e.getKey());
-                    System.out.println(f.getKey());
-                    System.out.println(g.getKey());
-                    System.out.println(g.getValue());
-                    System.out.println("");
-                }
-            }
-        }
-    }
 }
-

@@ -29,8 +29,8 @@ CREATE TABLE `items` (
     `manufacturer_uid` INT NOT NULL,
     `vehicle_type` VARCHAR(200) DEFAULT NULL,
     `start_date` DATE DEFAULT NULL,
-    PRIMARY KEY (`item_uid`),
-    FOREIGN KEY (`manufacturer_uid`) REFERENCES `manufacturers`(`manufacturer_uid`)
+    PRIMARY KEY (`item_uid`)
+    -- FOREIGN KEY (`manufacturer_uid`) REFERENCES `manufacturers`(`manufacturer_uid`)
 );
 
 CREATE TABLE `sales` (

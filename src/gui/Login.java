@@ -22,7 +22,6 @@ public class Login extends javax.swing.JFrame {
      */
     String username;
     String password;
-    Owner ownerObj = new Owner();
     public Login() {
         initComponents();
         getContentPane().requestFocusInWindow();
@@ -186,7 +185,7 @@ public class Login extends javax.swing.JFrame {
         else {
             username = jTextField1.getText();
             password = String.valueOf(jPasswordField1.getPassword());
-            boolean flag = ownerObj.validate(username, password);
+            boolean flag = Owner.validate(username, password);
             if(flag) {
                 Dashboard dashboardScreen = new Dashboard();
                 dashboardScreen.setVisible(true);
@@ -223,7 +222,7 @@ public class Login extends javax.swing.JFrame {
         else {
             username = jTextField1.getText();
             password = String.valueOf(jPasswordField1.getPassword());
-            boolean flag = ownerObj.validate(username, password);
+            boolean flag = Owner.validate(username, password);
             if(flag) {
                 Dashboard dashboardScreen = new Dashboard();
                 dashboardScreen.setVisible(true);

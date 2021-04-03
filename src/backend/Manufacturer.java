@@ -76,7 +76,7 @@ public class Manufacturer {
         } catch (SQLException ex) {
             Logger.getLogger(Manufacturer.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return status;
+        return ((status > 0) ? 1 : 0);
     }
     
     public int delete(){
@@ -90,7 +90,7 @@ public class Manufacturer {
         } catch (SQLException ex) {
             Logger.getLogger(Manufacturer.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return status;
+        return ((status > 0) ? 1 : 0);
     }
     
     @Override
