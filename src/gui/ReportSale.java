@@ -7,10 +7,12 @@ package gui;
 
 import backend.Inventory;
 import backend.Item;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 import javax.swing.JOptionPane;
+import javax.swing.UIManager;
 
 /**
  *
@@ -76,20 +78,21 @@ public class ReportSale extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(105, 105, 105)
-                .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 339, Short.MAX_VALUE)
-                .addGap(95, 95, 95))
+                .addGap(100, 100, 100)
+                .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 349, Short.MAX_VALUE)
+                .addGap(90, 90, 90))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(30, 30, 30)
+                .addGap(20, 20, 20)
                 .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(28, 28, 28))
+                .addGap(20, 20, 20))
         );
 
         jPanel2.setBackground(new java.awt.Color(65, 62, 59));
 
+        jComboBox1.setBackground(new java.awt.Color(255, 255, 255));
         jComboBox1.setFont(new java.awt.Font("Yrsa Medium", 0, 18)); // NOI18N
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         jComboBox1.addActionListener(new java.awt.event.ActionListener() {
@@ -98,6 +101,7 @@ public class ReportSale extends javax.swing.JFrame {
             }
         });
 
+        jComboBox2.setBackground(new java.awt.Color(255, 255, 255));
         jComboBox2.setFont(new java.awt.Font("Yrsa Medium", 0, 18)); // NOI18N
         jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         jComboBox2.addActionListener(new java.awt.event.ActionListener() {
@@ -106,9 +110,11 @@ public class ReportSale extends javax.swing.JFrame {
             }
         });
 
+        jComboBox3.setBackground(new java.awt.Color(255, 255, 255));
         jComboBox3.setFont(new java.awt.Font("Yrsa Medium", 0, 18)); // NOI18N
         jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
+        jTextField1.setBackground(new java.awt.Color(255, 255, 255));
         jTextField1.setFont(new java.awt.Font("Yrsa Medium", 0, 18)); // NOI18N
         jTextField1.setText("Enter Quantity");
         jTextField1.addFocusListener(new java.awt.event.FocusAdapter() {
@@ -125,6 +131,7 @@ public class ReportSale extends javax.swing.JFrame {
             }
         });
 
+        jButton1.setBackground(new java.awt.Color(255, 255, 255));
         jButton1.setFont(new java.awt.Font("Yrsa Medium", 0, 20)); // NOI18N
         jButton1.setText("Report");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -133,6 +140,7 @@ public class ReportSale extends javax.swing.JFrame {
             }
         });
 
+        jButton2.setBackground(new java.awt.Color(255, 255, 255));
         jButton2.setFont(new java.awt.Font("Yrsa Medium", 0, 20)); // NOI18N
         jButton2.setText("Back");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -210,7 +218,7 @@ public class ReportSale extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton2)
                     .addComponent(jButton1))
-                .addContainerGap(59, Short.MAX_VALUE))
+                .addContainerGap(71, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -223,7 +231,7 @@ public class ReportSale extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0))
@@ -261,7 +269,8 @@ public class ReportSale extends javax.swing.JFrame {
                     boolean flag = currItem.updateSale(sold);
                     if(flag){
                         float paid = currItem.getPrice() * sold;
-                        JOptionPane.showMessageDialog(null, "Sale Successful\nAmount to be Paid = Rs." + Float.toString(paid), "SUCCESS", JOptionPane.INFORMATION_MESSAGE);
+                        float roundOff = (float) Math.round(paid * 100) / 100;
+                        JOptionPane.showMessageDialog(null, "Sale Successful\nAmount to be Paid = Rs." + Float.toString(roundOff), "SUCCESS", JOptionPane.INFORMATION_MESSAGE);
                     }                        
                     else
                         JOptionPane.showMessageDialog(null, "Sale Unsuccessful", "ERROR", JOptionPane.ERROR_MESSAGE);
@@ -380,6 +389,7 @@ public class ReportSale extends javax.swing.JFrame {
 
         /* Create and display the form */
 //        Inventory.type().retrieveData();
+        UIManager.put("Button.focus", Color.white);
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new ReportSale().setVisible(true);

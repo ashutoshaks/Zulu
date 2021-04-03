@@ -5,6 +5,25 @@
  */
 package gui;
 
+import backend.Inventory;
+import controller.DB;
+import java.awt.BorderLayout;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.Period;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JButton;
+import javax.swing.JPanel;
+import org.knowm.xchart.XChartPanel;
+import org.knowm.xchart.XYChart;
+import org.knowm.xchart.XYChartBuilder;
+import org.knowm.xchart.style.Styler.LegendPosition;
+
 /**
  *
  * @author achcha
@@ -12,11 +31,65 @@ package gui;
 public class ViewGraph extends javax.swing.JFrame {
 
     /**
-     * Creates new form ViewGraph
+     * Creates new form Graph
      */
     public ViewGraph() {
         initComponents();
-        getContentPane().requestFocusInWindow();
+        this.createGraph();
+    }
+    
+    public final void createGraph() {
+        try {
+            int days = Period.between(Inventory.initialDate, Inventory.currentDate).getDays();
+//            int days = 30;
+            int high = (days / 30) * 30;
+            int low = high - 29;
+            
+            Connection con = DB.getConnection();
+            PreparedStatement ps = con.prepareStatement("SELECT * FROM sales WHERE day_number >= ? AND day_number <= ?");
+            ps.setInt(1, low);
+            ps.setInt(2, high);
+            ResultSet rs = ps.executeQuery();
+            ArrayList<Date> dates = new ArrayList<Date>();
+            ArrayList<Float> sales = new ArrayList<Float>();
+            while(rs.next()) {
+                dates.add(new Date(rs.getDate("sale_date").getTime()));
+                float amt = rs.getFloat("total_amount");
+                float roundOff = (float) Math.round(amt * 100) / 100;
+                sales.add(roundOff);
+            }
+            
+            XYChart chart = new XYChartBuilder().width(1700).height(860).title("Area Chart").xAxisTitle("Date").yAxisTitle("Sales").build();
+            
+            chart.getStyler().setLegendPosition(LegendPosition.InsideNE);
+//            chart.getStyler().setToolTipType(Styler.ToolTipType.xAndYLabels);
+//            chart.getStyler().setDefaultSeriesRenderStyle(XYSeriesRenderStyle.Area);
+            chart.getStyler().setToolTipsEnabled(true);
+            chart.getStyler().setToolTipsAlwaysVisible(true);
+            
+            chart.addSeries("a", dates, sales);
+            
+            JPanel chartPanel = new XChartPanel<XYChart>(chart);
+//            chartPanel.setBackground(new java.awt.Color(65, 62, 59));
+            this.add(chartPanel, BorderLayout.NORTH);
+//            
+            JPanel panel2 = new JPanel();
+            panel2.setBackground(new java.awt.Color(65, 62, 59));
+            this.add(panel2, BorderLayout.SOUTH);
+            JButton jButton1 = new JButton();
+            jButton1.setBackground(new java.awt.Color(255, 255, 255));
+            jButton1.setFont(new java.awt.Font("Yrsa Medium", 0, 25)); // NOI18N
+            jButton1.setText("Back");
+            jButton1.setPreferredSize(new java.awt.Dimension(130, 45));
+            jButton1.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    jButton1ActionPerformed(evt);
+                }
+            });  
+            panel2.add(jButton1);
+        } catch (SQLException ex) {
+            Logger.getLogger(ViewGraph.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -28,114 +101,20 @@ public class ViewGraph extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        jPanel2 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
-        jPanel3 = new javax.swing.JPanel();
-
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setResizable(false);
-
-        jPanel1.setBackground(new java.awt.Color(0, 60, 60));
-
-        jLabel1.setFont(new java.awt.Font("Yrsa Medium", 0, 48)); // NOI18N
-        jLabel1.setForeground(java.awt.Color.white);
-        jLabel1.setText("Graph");
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(271, 271, 271)
-                .addComponent(jLabel1)
-                .addContainerGap(289, Short.MAX_VALUE))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(28, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addGap(28, 28, 28))
-        );
-
-        jPanel2.setBackground(new java.awt.Color(65, 62, 59));
-
-        jButton1.setBackground(java.awt.Color.white);
-        jButton1.setFont(new java.awt.Font("Yrsa Medium", 0, 22)); // NOI18N
-        jButton1.setText("Back");
-        jButton1.setPreferredSize(new java.awt.Dimension(122, 45));
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-
-        jPanel3.setBackground(java.awt.Color.white);
-
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 445, Short.MAX_VALUE)
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 318, Short.MAX_VALUE)
-        );
-
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(116, 116, 116)
-                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(274, 274, 274)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(55, Short.MAX_VALUE)
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(28, 28, 28)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(28, 28, 28))
-        );
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
+        setPreferredSize(new java.awt.Dimension(1700, 950));
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {                                         
         // TODO add your handling code here:
-        Dashboard d = new Dashboard();
-        d.setVisible(true);
+        Dashboard dashObj = new Dashboard();
+        dashObj.setVisible(true);
         dispose();
-    }//GEN-LAST:event_jButton1ActionPerformed
-
-    /**
+    } 
+/**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
@@ -161,6 +140,7 @@ public class ViewGraph extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(ViewGraph.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
+        //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -169,12 +149,6 @@ public class ViewGraph extends javax.swing.JFrame {
             }
         });
     }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
     // End of variables declaration//GEN-END:variables
 }

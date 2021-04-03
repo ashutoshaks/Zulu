@@ -7,15 +7,10 @@ package gui;
 
 import backend.Inventory;
 import backend.Item;
-import controller.DB;
+import java.awt.Color;
 import java.awt.Font;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.HashMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -208,6 +203,7 @@ public class ViewInventory extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
+        UIManager.put("Button.focus", Color.white);
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new ViewInventory().setVisible(true);

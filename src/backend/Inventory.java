@@ -27,6 +27,7 @@ public class Inventory {
     public static HashMap<Integer, Item> itemsList = new HashMap<Integer, Item>();
     public static HashMap<Integer, Manufacturer> manufacturersList = new HashMap<Integer, Manufacturer>();
     public static HashMap<String, Integer> manufacturerIDList = new HashMap<String, Integer>();
+    public static LocalDate initialDate;
     public static LocalDate currentDate;
     
     private static Inventory instance = null;
@@ -46,6 +47,7 @@ public class Inventory {
             ps = con.prepareStatement("SELECT * FROM owner");
             rs = ps.executeQuery();
             rs.next();
+            Inventory.initialDate = rs.getDate("initial_date").toLocalDate();
             Inventory.currentDate = rs.getDate("curr_date").toLocalDate();
             
             ps = con.prepareStatement("SELECT * FROM manufacturers");
@@ -180,8 +182,10 @@ public class Inventory {
             
 //            System.out.println(threshold);
 //            System.out.println();
-            if(threshold > currItem.quantity)
+            if(threshold > currItem.quantity) {
                 orderList.put(e.getKey(), threshold - currItem.quantity);
+                currItem.quantity = threshold;
+            }
         }
         return orderList;
     }

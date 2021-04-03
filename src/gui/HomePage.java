@@ -6,8 +6,10 @@
 package gui;
 
 import backend.Inventory;
+import java.awt.Color;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.UIManager;
 
 /**
  *
@@ -109,6 +111,7 @@ public class HomePage extends javax.swing.JFrame {
     public static void main(String args[]) {
         HomePage HomePage_ = new HomePage();
         HomePage_.setVisible(true);
+        UIManager.put("Button.focus", Color.white);
         Inventory.type().retrieveData();
             for (int i = 1; i <= 100; i++) {
                 try {

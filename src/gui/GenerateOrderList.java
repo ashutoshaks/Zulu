@@ -19,10 +19,13 @@ import com.itextpdf.text.pdf.GrayColor;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
+import java.awt.Color;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.UIManager;
 
 /**
  *
@@ -181,6 +184,7 @@ public class GenerateOrderList extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(jTable1);
 
+        jButton1.setBackground(new java.awt.Color(255, 255, 255));
         jButton1.setFont(new java.awt.Font("Yrsa Medium", 0, 20)); // NOI18N
         jButton1.setText("Save List");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -189,6 +193,7 @@ public class GenerateOrderList extends javax.swing.JFrame {
             }
         });
 
+        jButton2.setBackground(new java.awt.Color(255, 255, 255));
         jButton2.setFont(new java.awt.Font("Yrsa Medium", 0, 20)); // NOI18N
         jButton2.setText("Back");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -250,6 +255,7 @@ public class GenerateOrderList extends javax.swing.JFrame {
             openPdf();
             addData(pdfTable);
             closePdf();
+            JOptionPane.showMessageDialog(null, "PDF File Saved!", "SUCCESS", JOptionPane.INFORMATION_MESSAGE);
         } catch (FileNotFoundException ex) {
             Logger.getLogger(GenerateOrderList.class.getName()).log(Level.SEVERE, null, ex);
         } catch (DocumentException ex) {
@@ -292,6 +298,7 @@ public class GenerateOrderList extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
+        UIManager.put("Button.focus", Color.white);
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new GenerateOrderList().setVisible(true);

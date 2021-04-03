@@ -5,6 +5,9 @@
  */
 package gui;
 
+import java.awt.Color;
+import javax.swing.UIManager;
+
 /**
  *
  * @author achcha
@@ -63,6 +66,7 @@ public class EndDay extends javax.swing.JFrame {
 
         jPanel2.setBackground(new java.awt.Color(65, 62, 59));
 
+        jButton1.setBackground(new java.awt.Color(255, 255, 255));
         jButton1.setFont(new java.awt.Font("Yrsa Medium", 0, 20)); // NOI18N
         jButton1.setText("View Order List");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -71,6 +75,7 @@ public class EndDay extends javax.swing.JFrame {
             }
         });
 
+        jButton2.setBackground(new java.awt.Color(255, 255, 255));
         jButton2.setFont(new java.awt.Font("Yrsa Medium", 0, 20)); // NOI18N
         jButton2.setText("View Sales Report");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -79,6 +84,7 @@ public class EndDay extends javax.swing.JFrame {
             }
         });
 
+        jButton3.setBackground(new java.awt.Color(255, 255, 255));
         jButton3.setFont(new java.awt.Font("Yrsa Medium", 0, 20)); // NOI18N
         jButton3.setText("Back");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
@@ -179,6 +185,7 @@ public class EndDay extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
+        UIManager.put("Button.focus", Color.white);
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new EndDay().setVisible(true);

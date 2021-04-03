@@ -8,13 +8,14 @@ package gui;
 import backend.Inventory;
 import backend.Item;
 import backend.Manufacturer;
-import backend.Item;
-import java.time.LocalDate;
+import java.awt.Color;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import javax.swing.JOptionPane;
+import javax.swing.UIManager;
 
 /**
  *
@@ -24,22 +25,15 @@ public class AddItem extends javax.swing.JFrame {
     
     private static boolean isValidString(String check)
     {
+//        System.out.println(check);
+        check = check.strip();
+        if(check.length() == 0)
+            return false;
         boolean ok = true;
         for(int i = 0; i < check.length(); i++)
         {
-            if(Character.isLetter(check.charAt(i)))
-                ok = true;
-            else if(Character.isDigit(check.charAt(i)))
-                ok = true;
-            else if(check.charAt(i) == ',')
-                ok = true;
-            else if(check.charAt(i) == '.')
-                ok = true;
-            else if(check.charAt(i) == '\'')
-                ok = true;
-            else if(check.charAt(i) == '&')
-                ok = true;
-            else if(check.charAt(i) == ' ')
+            if(Character.isLetter(check.charAt(i)) || Character.isDigit(check.charAt(i)) || check.charAt(i) == ',' || check.charAt(i) == '.' ||
+                    check.charAt(i) == '\'' || check.charAt(i) == '&' || check.charAt(i) == ' ')
                 ok = true;
             else
                 return false;
@@ -47,55 +41,53 @@ public class AddItem extends javax.swing.JFrame {
         return ok;
     }
     
-    private static boolean isValidItem(String ItemType)
+    private static boolean manufacturerPresent(String manufacturerName)
     {
-        return isValidString(ItemType);
-    }
-    
-    private static boolean isValidVehicle(String VehicleType)
-    {
-        return isValidString(VehicleType);
-    }
-    
-    private static boolean ManufacturerPresent(String ManufacturerName)
-    {
-        Set<String> ManufacturerSet = new HashSet<String>();
-        ManufacturerSet = Inventory.manufacturerIDList.keySet();
-        return ManufacturerSet.contains(ManufacturerName);
-    }
-    
-    private static boolean isValidQuantity(String Quantity)
-    {
-        try {
-            int quantity = Integer.parseInt(Quantity);
-            if(quantity > 0)
+        manufacturerName =  manufacturerName.strip();
+        for (Map.Entry<String, Integer> e : Inventory.manufacturerIDList.entrySet()) {
+            if(e.getKey().equalsIgnoreCase(manufacturerName))
                 return true;
-        } catch (NumberFormatException e) {
-            return false;
-//            JOptionPane.showMessageDialog(null, "Quantity Entered should be a number", "ERROR", JOptionPane.ERROR_MESSAGE);
         }
         return false;
     }
     
-    private static boolean isValidPrice(String Price)
+    private static boolean isValidQuantity(String quantity)
     {
-        try
-        {
-            
-            Float.parseFloat(Price);
-            float price = Float.parseFloat(Price);
-            if(price <= 0)
+        quantity = quantity.strip();
+        if(quantity.equals(""))
+            return false;
+        try {
+            int quant = Integer.parseInt(quantity);
+            if(quant > 0)
+                return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+        return false;
+    }
+    
+    private static boolean isValidPrice(String price)
+    {
+        price = price.strip();
+        if(price.equals(""))
+            return false;
+        try {
+            float priceFloat = Float.parseFloat(price);
+            if(priceFloat <= 0)
                 return false;
             else
                 return true;
         }
-        catch(NumberFormatException e)
-        {
-            if(Integer.parseInt(Price) >= 0)
-                return true;
-          //not a double
-          else
-            return false;
+        catch(NumberFormatException e) {
+            try {
+                int priceInt = Integer.parseInt(price);
+                if(priceInt > 0)
+                    return true;
+                else
+                    return false;
+            } catch(NumberFormatException e1){
+                return false;
+            }              
         }
     }
 
@@ -104,35 +96,36 @@ public class AddItem extends javax.swing.JFrame {
      */
     public AddItem() {
         initComponents();
-        Set<String> ItemTypeSet = new HashSet<String>();
-        ItemTypeSet = Inventory.searchMap.keySet();
-        ArrayList<String> arrayItemType = new ArrayList<String>(ItemTypeSet);
+        getContentPane().requestFocusInWindow();
+        
+        Set<String> itemTypeSet = new HashSet<String>();
+        itemTypeSet = Inventory.searchMap.keySet();
+        ArrayList<String> arrayItemType = new ArrayList<String>(itemTypeSet);
         arrayItemType.add(0, "None");
-        arrayItemType.add((Integer) (arrayItemType.size()), "Add new item type");
+        arrayItemType.add(arrayItemType.size(), "Add new item type");
         String[] arrI = new String[arrayItemType.size()];
         arrI = arrayItemType.toArray(arrI);
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(arrI));
 
-        Set<String> ManufacturerSet = new HashSet<String>();
-        ManufacturerSet = Inventory.manufacturerIDList.keySet();
-        ArrayList<String> arrayManufacturer = new ArrayList<String>(ManufacturerSet);
+        Set<String> manufacturerSet = new HashSet<String>();
+        manufacturerSet = Inventory.manufacturerIDList.keySet();
+        ArrayList<String> arrayManufacturer = new ArrayList<String>(manufacturerSet);
         arrayManufacturer.add(0, "None");
-        arrayManufacturer.add((Integer) (arrayManufacturer.size()), "Add a new manufacturer");
+        arrayManufacturer.add(arrayManufacturer.size(), "Add a new manufacturer");
         String[] arrM = new String[arrayManufacturer.size()];
         arrM = arrayManufacturer.toArray(arrM);
         jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(arrM));
 
-        Set<String> VehicleSet = new HashSet<String>();
+        Set<String> vehicleSet = new HashSet<String>();
         for (Map.Entry<Integer, Item> e : Inventory.itemsList.entrySet()) {
-            VehicleSet.add(e.getValue().getVehicleType());
+            vehicleSet.add(e.getValue().getVehicleType());
         }
-        ArrayList<String> arrayVehicle = new ArrayList<String>(VehicleSet);
+        ArrayList<String> arrayVehicle = new ArrayList<String>(vehicleSet);
         arrayVehicle.add(0, "None");
-        arrayVehicle.add((Integer) (arrayVehicle.size()), "Add new vehicle type");
+        arrayVehicle.add(arrayVehicle.size(), "Add new vehicle type");
         String[] arrV = new String[arrayVehicle.size()];
         arrV = arrayVehicle.toArray(arrV);
         jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(arrV));
-
     }
 
     /**
@@ -178,16 +171,16 @@ public class AddItem extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(216, 216, 216)
+                .addGap(270, 270, 270)
                 .addComponent(jLabel5)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(28, 28, 28)
+                .addGap(27, 27, 27)
                 .addComponent(jLabel5)
-                .addContainerGap(28, Short.MAX_VALUE))
+                .addContainerGap(29, Short.MAX_VALUE))
         );
 
         jPanel2.setBackground(new java.awt.Color(65, 62, 59));
@@ -203,6 +196,7 @@ public class AddItem extends javax.swing.JFrame {
 
         ItemTypeTextField.setBackground(java.awt.Color.white);
         ItemTypeTextField.setFont(new java.awt.Font("Yrsa Medium", 0, 18)); // NOI18N
+        ItemTypeTextField.setForeground(new java.awt.Color(60, 60, 60));
         ItemTypeTextField.setText("Item Type");
         ItemTypeTextField.setEnabled(false);
         ItemTypeTextField.addActionListener(new java.awt.event.ActionListener() {
@@ -213,11 +207,13 @@ public class AddItem extends javax.swing.JFrame {
 
         ManufacturerNameTextField.setBackground(java.awt.Color.white);
         ManufacturerNameTextField.setFont(new java.awt.Font("Yrsa Medium", 0, 18)); // NOI18N
+        ManufacturerNameTextField.setForeground(new java.awt.Color(60, 60, 60));
         ManufacturerNameTextField.setText("Manufacturer Name");
         ManufacturerNameTextField.setEnabled(false);
 
         ManufacturerAddressTextField.setBackground(java.awt.Color.white);
         ManufacturerAddressTextField.setFont(new java.awt.Font("Yrsa Medium", 0, 18)); // NOI18N
+        ManufacturerAddressTextField.setForeground(new java.awt.Color(60, 60, 60));
         ManufacturerAddressTextField.setText("Manufacturer Address");
         ManufacturerAddressTextField.setEnabled(false);
         ManufacturerAddressTextField.addActionListener(new java.awt.event.ActionListener() {
@@ -228,6 +224,7 @@ public class AddItem extends javax.swing.JFrame {
 
         VehicleTypeTextField.setBackground(java.awt.Color.white);
         VehicleTypeTextField.setFont(new java.awt.Font("Yrsa Medium", 0, 18)); // NOI18N
+        VehicleTypeTextField.setForeground(new java.awt.Color(60, 60, 60));
         VehicleTypeTextField.setText("Vehicle Type");
         VehicleTypeTextField.setEnabled(false);
 
@@ -268,11 +265,6 @@ public class AddItem extends javax.swing.JFrame {
         BackButton.setBackground(java.awt.Color.white);
         BackButton.setFont(new java.awt.Font("Yrsa Medium", 0, 20)); // NOI18N
         BackButton.setText("Back");
-        BackButton.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                BackButtonMouseClicked(evt);
-            }
-        });
         BackButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 BackButtonActionPerformed(evt);
@@ -289,10 +281,14 @@ public class AddItem extends javax.swing.JFrame {
         });
 
         PriceTextField.setFont(new java.awt.Font("Yrsa Medium", 0, 18)); // NOI18N
+        PriceTextField.setText("Enter Price");
         PriceTextField.setPreferredSize(new java.awt.Dimension(110, 42));
-        PriceTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                PriceTextFieldActionPerformed(evt);
+        PriceTextField.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                PriceTextFieldFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                PriceTextFieldFocusLost(evt);
             }
         });
 
@@ -301,10 +297,14 @@ public class AddItem extends javax.swing.JFrame {
         jLabel6.setText("Quantity");
 
         QuantityTextField.setFont(new java.awt.Font("Yrsa Medium", 0, 18)); // NOI18N
+        QuantityTextField.setText("Enter Quantity");
         QuantityTextField.setPreferredSize(new java.awt.Dimension(110, 42));
-        QuantityTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                QuantityTextFieldActionPerformed(evt);
+        QuantityTextField.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                QuantityTextFieldFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                QuantityTextFieldFocusLost(evt);
             }
         });
 
@@ -312,52 +312,44 @@ public class AddItem extends javax.swing.JFrame {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(ManufacturerAddressTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
-                        .addGap(50, 50, 50)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                                        .addComponent(jLabel2)
-                                        .addGap(56, 56, 56))
-                                    .addGroup(jPanel2Layout.createSequentialGroup()
-                                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(11, 11, 11)))
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(jComboBox1, 0, 180, Short.MAX_VALUE)
-                                    .addComponent(jComboBox2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addGroup(jPanel2Layout.createSequentialGroup()
-                                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
-                                        .addComponent(QuantityTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(jPanel2Layout.createSequentialGroup()
-                                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(PriceTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(jPanel2Layout.createSequentialGroup()
-                                        .addComponent(jLabel3)
-                                        .addGap(66, 66, 66)
-                                        .addComponent(jComboBox3, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                                .addGap(1, 1, 1)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 55, Short.MAX_VALUE)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(ManufacturerNameTextField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(VehicleTypeTextField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(ItemTypeTextField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(50, 50, 50))
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(184, 184, 184)
                 .addComponent(AddItemButton, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(133, 133, 133)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(BackButton, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(184, 184, 184))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addGap(69, 69, 69)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel3))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jComboBox3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(QuantityTextField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(PriceTextField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jComboBox1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jComboBox2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(75, 75, 75)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(ManufacturerAddressTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                            .addComponent(ItemTypeTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(83, 83, 83))
+                        .addGroup(jPanel2Layout.createSequentialGroup()
+                            .addComponent(ManufacturerNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addContainerGap()))
+                    .addComponent(VehicleTypeTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -367,33 +359,35 @@ public class AddItem extends javax.swing.JFrame {
                     .addComponent(jLabel1)
                     .addComponent(ItemTypeTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addGap(33, 33, 33)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2)
-                    .addComponent(ManufacturerNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                    .addComponent(ManufacturerNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(33, 33, 33)
                 .addComponent(ManufacturerAddressTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel3)
-                        .addComponent(VehicleTypeTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(18, 18, 18)
+                .addGap(33, 33, 33)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(VehicleTypeTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3))
+                .addGap(33, 33, 33)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(QuantityTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(33, 33, 33)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(QuantityTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(PriceTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(40, 40, 40)
+                        .addGap(13, 123, Short.MAX_VALUE)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(AddItemButton)
-                            .addComponent(BackButton)))
-                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(68, Short.MAX_VALUE))
+                            .addComponent(BackButton)
+                            .addComponent(AddItemButton))
+                        .addGap(29, 29, 29))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(PriceTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -408,8 +402,7 @@ public class AddItem extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(0, 0, 0))
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -427,134 +420,129 @@ public class AddItem extends javax.swing.JFrame {
     private void AddItemButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddItemButtonActionPerformed
         // TODO add your handling code here:
         if(jComboBox1.getSelectedItem() == "None")
-        {
             JOptionPane.showMessageDialog(null, "Item Type is not selected", "ERROR", JOptionPane.ERROR_MESSAGE);
-        }
-        else if(jComboBox1.getSelectedItem() == "Add new item type" && !isValidItem(ItemTypeTextField.getText()))
-        {
-            JOptionPane.showMessageDialog(null, "Please enter a valid item type", "ERROR", JOptionPane.ERROR_MESSAGE);
-        }
+        else if(jComboBox1.getSelectedItem() == "Add new Item Type" && !isValidString(ItemTypeTextField.getText()))
+            JOptionPane.showMessageDialog(null, "Enter a valid Item Type", "ERROR", JOptionPane.ERROR_MESSAGE);
         else if(jComboBox3.getSelectedItem() == "None")
-        {
             JOptionPane.showMessageDialog(null, "Vehicle Type is not selected", "ERROR", JOptionPane.ERROR_MESSAGE);
-        }
-        else if(jComboBox3.getSelectedItem() == "Add new vehicle type" && !isValidVehicle(VehicleTypeTextField.getText()))
-        {
-            JOptionPane.showMessageDialog(null, "Please enter a valid vehicle type", "ERROR", JOptionPane.ERROR_MESSAGE);
-        }
+        else if(jComboBox3.getSelectedItem() == "Add new Vehicle Type" && !isValidString(VehicleTypeTextField.getText()))
+            JOptionPane.showMessageDialog(null, "Enter a valid Vehicle Type", "ERROR", JOptionPane.ERROR_MESSAGE);
         else if(jComboBox2.getSelectedItem() == "None")
-        {
-            JOptionPane.showMessageDialog(null, "manufacturer is not selected", "ERROR", JOptionPane.ERROR_MESSAGE);
-        }
-        else if(jComboBox2.getSelectedItem() == "Add a new manufacturer" && !isValidString(ManufacturerNameTextField.getText()))
-        {
-            JOptionPane.showMessageDialog(null, "Please enter a valid Manufacturer's name.", "ERROR", JOptionPane.ERROR_MESSAGE);
-        }
-        else if(jComboBox2.getSelectedItem() == "Add a new manufacturer" && ManufacturerPresent(ManufacturerNameTextField.getText()))
-        {
-            JOptionPane.showMessageDialog(null, "Entered Manufacturer is present in the Manufacturer's list, please select from the list.", "ERROR", JOptionPane.ERROR_MESSAGE);
-        }
-        else if(jComboBox2.getSelectedItem() == "Add a new manufacturer" && !isValidString(ManufacturerAddressTextField.getText()))
-        {
-            JOptionPane.showMessageDialog(null, "Please enter a valid Manufacturer's address.", "ERROR", JOptionPane.ERROR_MESSAGE);
-        }
-        else if(!isValidQuantity(QuantityTextField.getText()))
-        {
-            JOptionPane.showMessageDialog(null, "Please enter a valid item quantity.", "ERROR", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Manufacturer is not selected", "ERROR", JOptionPane.ERROR_MESSAGE);
+        else if(jComboBox2.getSelectedItem() == "Add a new Manufacturer" && !isValidString(ManufacturerNameTextField.getText()))
+            JOptionPane.showMessageDialog(null, "Enter a valid Manufacturer Name", "ERROR", JOptionPane.ERROR_MESSAGE);
+        else if(jComboBox2.getSelectedItem() == "Add a new Manufacturer" && manufacturerPresent(ManufacturerNameTextField.getText()))
+            JOptionPane.showMessageDialog(null, "Manufacturer Already Present", "ERROR", JOptionPane.ERROR_MESSAGE);
+        else if(jComboBox2.getSelectedItem() == "Add a new Manufacturer" && !isValidString(ManufacturerAddressTextField.getText()))
+            JOptionPane.showMessageDialog(null, "Enter a valid Manufacturer Address", "ERROR", JOptionPane.ERROR_MESSAGE);
+        else if(!isValidQuantity(QuantityTextField.getText())) {
+            JOptionPane.showMessageDialog(null, "Enter a Valid Item Quantity", "ERROR", JOptionPane.ERROR_MESSAGE);
             QuantityTextField.setText("");
         }
-        else if(!isValidPrice(PriceTextField.getText()))
-        {
-            JOptionPane.showMessageDialog(null, "Please enter a valid item price.", "ERROR", JOptionPane.ERROR_MESSAGE);
+        else if(!isValidPrice(PriceTextField.getText())) {
+            JOptionPane.showMessageDialog(null, "Enter a valid Item Price", "ERROR", JOptionPane.ERROR_MESSAGE);
             PriceTextField.setText("");
         }
-        else
-        {
+        else {
             String ItemType = "";
             if(jComboBox1.getSelectedItem() != "Add new item type")
-            {
                 ItemType = (String)jComboBox1.getSelectedItem();
-            }
-            else
-            {
+            else {
                 ItemType = ItemTypeTextField.getText();
                 ItemTypeTextField.setText("");
             }
-            
+            ItemType = ItemType.strip();
+
             String ManufacturerName = "";
-            int ManufacturerID;
-            if(jComboBox2.getSelectedItem() == "Add a new manufacturer")
-            {
+            int ManufacturerID = -1;
+            if(jComboBox2.getSelectedItem() == "Add a new manufacturer") {
                 ManufacturerName = ManufacturerNameTextField.getText();
                 String ManufacturerAddress = ManufacturerAddressTextField.getText();
-                AddThisManufacturer(ManufacturerName, ManufacturerAddress);
-                ManufacturerID = Inventory.manufacturerIDList.get(ManufacturerName);
                 
+                ManufacturerName = ManufacturerName.strip();
+                ManufacturerAddress = ManufacturerAddress.strip();
+                
+                addThisManufacturer(ManufacturerName, ManufacturerAddress);
+                for (Map.Entry<String, Integer> e : Inventory.manufacturerIDList.entrySet()) {
+                    if(e.getKey().toLowerCase().equals(ManufacturerName)) {
+                        ManufacturerID = e.getValue();
+                        break;
+                    }
+                }
                 ManufacturerNameTextField.setText("");
                 ManufacturerAddressTextField.setText("");
             }
-            else
-            {
+            else {
                 ManufacturerName = (String)jComboBox2.getSelectedItem();
-                ManufacturerID = Inventory.manufacturerIDList.get(ManufacturerName);
+                
+                ManufacturerName = ManufacturerName.strip();
+                for (Map.Entry<String, Integer> e : Inventory.manufacturerIDList.entrySet()) {
+                    if(e.getKey().toLowerCase().equals(ManufacturerName)) {
+                        ManufacturerID = e.getValue();
+                        break;
+                    }
+                }
                 Inventory.manufacturersList.get(ManufacturerID).incrementItemCount();
             }
-            
+
             String VehicleType = "";
             if(jComboBox3.getSelectedItem() != "Add new vehicle type")
-            {
                 VehicleType = (String)jComboBox3.getSelectedItem();
-            }
-            else
-            {
+            else {
                 VehicleType = VehicleTypeTextField.getText();
                 VehicleTypeTextField.setText("");
             }
+            VehicleType = VehicleType.strip();
             
-            int quantity = Integer.parseInt(QuantityTextField.getText());
+            String q, p;
+            q = QuantityTextField.getText();
+            q = q.strip();
+            p = PriceTextField.getText();
+            p = p.strip();
             
-            float price = Float.parseFloat(PriceTextField.getText());
+            int quantity = Integer.parseInt(q);
+            float price = Float.parseFloat(p);
             
-            if(!AddThisItem(ItemType, ManufacturerID, VehicleType, quantity, price))
-            {
-                JOptionPane.showMessageDialog(null, "Item is present in the inventory!", "ERROR", JOptionPane.ERROR_MESSAGE);
-            }
+            if(!addThisItem(ItemType, ManufacturerID, VehicleType, quantity, price))
+                JOptionPane.showMessageDialog(null, "Item Already Present in the Inventory!", "ERROR", JOptionPane.ERROR_MESSAGE);
             else
-            {
-                JOptionPane.showMessageDialog(null, "Item is successfully added to the inventory!", "ERROR", JOptionPane.ERROR_MESSAGE);
-            }
+                JOptionPane.showMessageDialog(null, "Item Successfully Added to the Inventory!", "SUCCESS", JOptionPane.INFORMATION_MESSAGE);
             
-            QuantityTextField.setText("");
-            PriceTextField.setText("");
+            QuantityTextField.setText("Enter Quantity");
+            PriceTextField.setText("Enter Price");
+            ItemTypeTextField.setText("Item Type");
+            ManufacturerNameTextField.setText("Manufacturer Name");
+            ManufacturerAddressTextField.setText("Manufacturer Address");
+            VehicleTypeTextField.setText("Vehicle Type");
 
             ItemTypeTextField.setEnabled(false);
             ManufacturerNameTextField.setEnabled(false);
             ManufacturerAddressTextField.setEnabled(false);
             VehicleTypeTextField.setEnabled(false);
 
-            Set<String> ItemTypeSet = new HashSet<String>();
-            ItemTypeSet = Inventory.searchMap.keySet();
-            ArrayList<String> arrayItemType = new ArrayList<String>(ItemTypeSet);
+            Set<String> itemTypeSet = new HashSet<String>();
+            itemTypeSet = Inventory.searchMap.keySet();
+            ArrayList<String> arrayItemType = new ArrayList<String>(itemTypeSet);
             arrayItemType.add(0, "None");
             arrayItemType.add((Integer) (arrayItemType.size()), "Add new item type");
             String[] arrI = new String[arrayItemType.size()];
             arrI = arrayItemType.toArray(arrI);
             jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(arrI));
 
-            Set<String> ManufacturerSet = new HashSet<String>();
-            ManufacturerSet = Inventory.manufacturerIDList.keySet();
-            ArrayList<String> arrayManufacturer = new ArrayList<String>(ManufacturerSet);
+            Set<String> manufacturerSet = new HashSet<String>();
+            manufacturerSet = Inventory.manufacturerIDList.keySet();
+            ArrayList<String> arrayManufacturer = new ArrayList<String>(manufacturerSet);
             arrayManufacturer.add(0, "None");
             arrayManufacturer.add((Integer) (arrayManufacturer.size()), "Add a new manufacturer");
             String[] arrM = new String[arrayManufacturer.size()];
             arrM = arrayManufacturer.toArray(arrM);
             jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(arrM));
 
-            Set<String> VehicleSet = new HashSet<String>();
+            Set<String> vehicleSet = new HashSet<String>();
             for (Map.Entry<Integer, Item> e : Inventory.itemsList.entrySet()) {
-                VehicleSet.add(e.getValue().getVehicleType());
+                vehicleSet.add(e.getValue().getVehicleType());
             }
-            ArrayList<String> arrayVehicle = new ArrayList<String>(VehicleSet);
+            ArrayList<String> arrayVehicle = new ArrayList<String>(vehicleSet);
             arrayVehicle.add(0, "None");
             arrayVehicle.add((Integer) (arrayVehicle.size()), "Add new vehicle type");
             String[] arrV = new String[arrayVehicle.size()];
@@ -563,40 +551,44 @@ public class AddItem extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_AddItemButtonActionPerformed
 
-    private static void AddThisManufacturer(String ManufacturerName, String ManufacturerAddress)
-    {
+    private static void addThisManufacturer(String ManufacturerName, String ManufacturerAddress) {
         Manufacturer newManufacturer = new Manufacturer(-1, ManufacturerName, ManufacturerAddress, 1);
         newManufacturer.save();
-        return;
     }
     
-    private static boolean AddThisItem(String ItemType, int ManufacturerID, String VehicleType, int quantity, float price)
-    {
-        System.out.println(ItemType);
-        System.out.println(ManufacturerID);
-        System.out.println(VehicleType);
-        if(Inventory.searchMap.containsKey(ItemType))
-        {
-            if(Inventory.searchMap.get(ItemType).containsKey(ManufacturerID))
-            {
-                if(Inventory.searchMap.get(ItemType).get(ManufacturerID).containsKey(VehicleType))
-                    return false;
-            }
+    private static boolean addThisItem(String ItemType, int ManufacturerID, String VehicleType, int quantity, float price) {
+        for (Map.Entry<Integer, Item> e : Inventory.itemsList.entrySet()) {
+           if(e.getValue().getType().toLowerCase().equals(ItemType) && e.getValue().getManufacturerID() == ManufacturerID && e.getValue().getVehicleType().toLowerCase().equals(VehicleType))
+               return false;
         }
-        System.out.println("gui.AddItem.AddThisItem()");
+        
         Item newItem = new Item(-1, ItemType, price, quantity, 0, 0, ManufacturerID, VehicleType, Inventory.currentDate);
         newItem.save();
+        Inventory.itemsList.put(newItem.getUID(), newItem);
+        if(Inventory.searchMap.containsKey(ItemType)) {
+            if(Inventory.searchMap.get(ItemType).containsKey((ManufacturerID))) {
+                Inventory.searchMap.get(ItemType).get(ManufacturerID).put(VehicleType, newItem);
+            }
+            else {
+                HashMap<String, Item> temp1 = new HashMap<>();
+                temp1.put(VehicleType, newItem);
+                Inventory.searchMap.get(ItemType).put(ManufacturerID, temp1);
+            }
+        }
+        else {
+            HashMap<String, Item> temp1 = new HashMap<>();
+            temp1.put(VehicleType, newItem);                
+            HashMap<Integer, HashMap<String, Item>> temp2 = new HashMap<>();
+            temp2.put(ManufacturerID, temp1);                
+            Inventory.searchMap.put(ItemType, temp2);
+        }
         return true;
     }
     
-    private void BackButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BackButtonMouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_BackButtonMouseClicked
-
     private void BackButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BackButtonActionPerformed
         // TODO add your handling code here:
-        Dashboard d = new Dashboard();
-        d.setVisible(true);
+        Dashboard dashboardScreen = new Dashboard();
+        dashboardScreen.setVisible(true);
         dispose();
     }//GEN-LAST:event_BackButtonActionPerformed
 
@@ -606,7 +598,7 @@ public class AddItem extends javax.swing.JFrame {
             ItemTypeTextField.setEnabled(true);
             ItemTypeTextField.setText("");
         } else {
-            ItemTypeTextField.setText("");
+            ItemTypeTextField.setText("Item Type");
             ItemTypeTextField.setEnabled(false);
         }
     }//GEN-LAST:event_jComboBox1ActionPerformed
@@ -619,8 +611,8 @@ public class AddItem extends javax.swing.JFrame {
             ManufacturerNameTextField.setText("");
             ManufacturerAddressTextField.setText("");
         } else {
-            ManufacturerNameTextField.setText("");
-            ManufacturerAddressTextField.setText("");
+            ManufacturerNameTextField.setText("Manufacturer Name");
+            ManufacturerAddressTextField.setText("Manufacturer Address");
             ManufacturerNameTextField.setEnabled(false);
             ManufacturerAddressTextField.setEnabled(false);
         }
@@ -635,18 +627,34 @@ public class AddItem extends javax.swing.JFrame {
         }
         else
         {
-            VehicleTypeTextField.setText("");
+            VehicleTypeTextField.setText("Vehicle Type");
             VehicleTypeTextField.setEnabled(false);
         }
     }//GEN-LAST:event_jComboBox3ActionPerformed
 
-    private void QuantityTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_QuantityTextFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_QuantityTextFieldActionPerformed
+    private void QuantityTextFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_QuantityTextFieldFocusGained
+        // TODO add your handling code here
+        if(QuantityTextField.getText().equals("Enter Quantity"))
+            QuantityTextField.setText("");
+    }//GEN-LAST:event_QuantityTextFieldFocusGained
 
-    private void PriceTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PriceTextFieldActionPerformed
+    private void QuantityTextFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_QuantityTextFieldFocusLost
         // TODO add your handling code here:
-    }//GEN-LAST:event_PriceTextFieldActionPerformed
+        if(QuantityTextField.getText().equals(""))
+            QuantityTextField.setText("Enter Quantity");
+    }//GEN-LAST:event_QuantityTextFieldFocusLost
+
+    private void PriceTextFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_PriceTextFieldFocusGained
+        // TODO add your handling code here:
+        if(PriceTextField.getText().equals("Enter Price"))
+            PriceTextField.setText("");
+    }//GEN-LAST:event_PriceTextFieldFocusGained
+
+    private void PriceTextFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_PriceTextFieldFocusLost
+        // TODO add your handling code here:
+        if(PriceTextField.getText().equals(""))
+            PriceTextField.setText("Enter Price");
+    }//GEN-LAST:event_PriceTextFieldFocusLost
 
     /**
      * @param args the command line arguments
@@ -657,6 +665,7 @@ public class AddItem extends javax.swing.JFrame {
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
+        UIManager.put("Button.focus", Color.white);
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -676,7 +685,7 @@ public class AddItem extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        Inventory.type().retrieveData();
+//        Inventory.type().retrieveData();
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new AddItem().setVisible(true);
