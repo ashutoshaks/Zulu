@@ -12,7 +12,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.Period;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.logging.Level;
@@ -41,8 +43,7 @@ public class ViewGraph extends javax.swing.JFrame {
     
     public final void createGraph() {
         try {
-            int days = Period.between(Inventory.initialDate, Inventory.currentDate).getDays();
-//            int days = 30;
+            int days = (int) ChronoUnit.DAYS.between(Inventory.initialDate, Inventory.currentDate);
             int high = (days / 30) * 30;
             int low = high - 29;
             
@@ -52,28 +53,34 @@ public class ViewGraph extends javax.swing.JFrame {
             ps.setInt(2, high);
             ResultSet rs = ps.executeQuery();
             ArrayList<Date> dates = new ArrayList<Date>();
-            ArrayList<Float> sales = new ArrayList<Float>();
+            ArrayList<Integer> sales = new ArrayList<Integer>();
+            boolean flag = false;
+            LocalDate start = Inventory.currentDate, end = Inventory.currentDate;
             while(rs.next()) {
+                if(!flag) {
+                    start = rs.getDate("sale_date").toLocalDate();
+                    flag = true;
+                }
+                end = rs.getDate("sale_date").toLocalDate();
                 dates.add(new Date(rs.getDate("sale_date").getTime()));
-                float amt = rs.getFloat("total_amount");
-                float roundOff = (float) Math.round(amt * 100) / 100;
-                sales.add(roundOff);
+                int amt = (int) rs.getFloat("total_amount");
+                sales.add(amt);
             }
             
-            XYChart chart = new XYChartBuilder().width(1700).height(860).title("Area Chart").xAxisTitle("Date").yAxisTitle("Sales").build();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd LLLL yyyy");
+            String formattedStart = start.format(formatter);
+            String formattedEnd = end.format(formatter);
+            String header = "Sales Graph from " + formattedStart + " to " + formattedEnd; 
+            XYChart chart = new XYChartBuilder().width(1700).height(860).title(header).xAxisTitle("Date").yAxisTitle("Sales").build();
             
             chart.getStyler().setLegendPosition(LegendPosition.InsideNE);
-//            chart.getStyler().setToolTipType(Styler.ToolTipType.xAndYLabels);
-//            chart.getStyler().setDefaultSeriesRenderStyle(XYSeriesRenderStyle.Area);
             chart.getStyler().setToolTipsEnabled(true);
             chart.getStyler().setToolTipsAlwaysVisible(true);
             
-            chart.addSeries("a", dates, sales);
+            chart.addSeries("Sales", dates, sales);
             
             JPanel chartPanel = new XChartPanel<XYChart>(chart);
-//            chartPanel.setBackground(new java.awt.Color(65, 62, 59));
-            this.add(chartPanel, BorderLayout.NORTH);
-//            
+            this.add(chartPanel, BorderLayout.NORTH);           
             JPanel panel2 = new JPanel();
             panel2.setBackground(new java.awt.Color(65, 62, 59));
             this.add(panel2, BorderLayout.SOUTH);
@@ -103,7 +110,9 @@ public class ViewGraph extends javax.swing.JFrame {
     private void initComponents() {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Zulu");
         setPreferredSize(new java.awt.Dimension(1700, 950));
+        setResizable(false);
 
         pack();
         setLocationRelativeTo(null);
@@ -115,9 +124,10 @@ public class ViewGraph extends javax.swing.JFrame {
         dashObj.setVisible(true);
         dispose();
     } 
-/**
-     * @param args the command line arguments
-     */
+    
+    /**
+    * @param args the command line arguments
+    */
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">

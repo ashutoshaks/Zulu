@@ -25,7 +25,6 @@ public class ViewInventory extends javax.swing.JFrame {
      */
     public ViewInventory() {
         initComponents();
-//        Inventory.type().retrieveData();
         getContentPane().requestFocusInWindow();
         this.fetch();       
     }
@@ -68,6 +67,7 @@ public class ViewInventory extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Zulu");
         setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(0, 60, 60));

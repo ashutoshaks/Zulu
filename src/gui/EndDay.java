@@ -40,6 +40,7 @@ public class EndDay extends javax.swing.JFrame {
         jButton3 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Zulu");
         setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(0, 60, 60));
@@ -140,6 +141,8 @@ public class EndDay extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         GenerateOrderList listScreen = new GenerateOrderList();
+        if(listScreen.f)
+            return;
         listScreen.setVisible(true);
         dispose();
     }//GEN-LAST:event_jButton1ActionPerformed

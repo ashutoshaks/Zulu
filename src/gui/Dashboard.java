@@ -7,8 +7,9 @@ package gui;
 
 import backend.Inventory;
 import java.awt.Color;
-import java.time.Period;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
@@ -25,7 +26,6 @@ public class Dashboard extends javax.swing.JFrame {
     public Dashboard() {
         initComponents();
         getContentPane().requestFocusInWindow();
-//        System.out.print(Inventory.currentDate);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd LLLL yyyy");
         String formattedString = Inventory.currentDate.format(formatter);
         formattedString = "Date : " + formattedString;
@@ -53,6 +53,7 @@ public class Dashboard extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Zulu");
         setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(0, 60, 60));
@@ -229,6 +230,8 @@ public class Dashboard extends javax.swing.JFrame {
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         // TODO add your handling code here:
         Inventory.type().endDay();
+        if((int) ChronoUnit.DAYS.between(Inventory.initialDate, Inventory.currentDate) % 30 == 0)
+            JOptionPane.showMessageDialog(null, "Graph for this month has been generated", "INFO", JOptionPane.INFORMATION_MESSAGE);
 
         EndDay endScreen = new EndDay();
         endScreen.setVisible(true);
@@ -237,11 +240,13 @@ public class Dashboard extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        if(Period.between(Inventory.initialDate, Inventory.currentDate).getDays() < 30)
+        if((int) ChronoUnit.DAYS.between(Inventory.initialDate, Inventory.currentDate) < 30)
             JOptionPane.showMessageDialog(null, "A month has not yet been completed", "ERROR", JOptionPane.ERROR_MESSAGE);
-        ViewGraph graphScreen = new ViewGraph();
-        graphScreen.setVisible(true);
-        dispose();
+        else {
+            ViewGraph graphScreen = new ViewGraph();
+            graphScreen.setVisible(true);
+            dispose();
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
@@ -265,12 +270,6 @@ public class Dashboard extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_jButton6ActionPerformed
     
-//    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {                                         
-//        // TODO add your handling code here:
-//        AddItem a = new AddItem();
-//        a.setVisible(true);
-//        dispose();
-//    }
     /**
      * @param args the command line arguments
      */
@@ -301,9 +300,7 @@ public class Dashboard extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-//        
-//        Inventory.type().retrieveData();
-//        
+      
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new Dashboard().setVisible(true);

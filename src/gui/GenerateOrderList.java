@@ -41,6 +41,9 @@ public class GenerateOrderList extends javax.swing.JFrame {
     private Document document;
     private PdfWriter writer;
     
+    boolean flag = false;
+    boolean f = false;
+    
     public GenerateOrderList() {
         initComponents();
         getContentPane().requestFocusInWindow();
@@ -69,11 +72,9 @@ public class GenerateOrderList extends javax.swing.JFrame {
         jTable1.getColumnModel().getColumn(4).setPreferredWidth(50);
 
         HashMap<Integer, Integer> orderObj= Inventory.type().getOrderList();
-        for (HashMap.Entry<Integer, Integer> e : orderObj.entrySet()) {
-            System.out.println(e.getKey());
-            System.out.println(e.getValue());
-            System.out.println();
-            
+        if(orderObj.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Stock is enough. Nothing to order.", "INFO", JOptionPane.INFORMATION_MESSAGE);
+            f = true;
         }
         for (HashMap.Entry<Integer, Integer> e : orderObj.entrySet()) {
             Item currItem = Inventory.itemsList.get(e.getKey());
@@ -132,6 +133,7 @@ public class GenerateOrderList extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Zulu");
         setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(0, 60, 60));
@@ -249,9 +251,8 @@ public class GenerateOrderList extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void saveList() {
         try {
-            // TODO add your handling code here:
             PdfPTable pdfTable = new PdfPTable(jTable1.getColumnCount());
             openPdf();
             addData(pdfTable);
@@ -262,10 +263,22 @@ public class GenerateOrderList extends javax.swing.JFrame {
         } catch (DocumentException ex) {
             Logger.getLogger(GenerateOrderList.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        flag = true;
+        this.saveList();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
+        if(!flag) {
+            int result = JOptionPane.showConfirmDialog(null,"Do you want to save the list?\nYou will not be able to view the list again", "WARNING", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+            if(result == JOptionPane.YES_OPTION) {
+               this.saveList();
+            }
+        }
         EndDay endObj = new EndDay();
         endObj.setVisible(true);
         dispose();

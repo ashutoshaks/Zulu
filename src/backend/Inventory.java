@@ -13,7 +13,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.Period;
+import java.time.temporal.ChronoUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -172,15 +172,26 @@ public class Inventory {
         }
     }
     
+    
     public HashMap<Integer, Integer> getOrderList() {
         HashMap<Integer, Integer> orderList = new HashMap<>();
         for(Map.Entry<Integer, Item> e : Inventory.itemsList.entrySet()) {
             Item currItem = e.getValue();
-            int days = Period.between(currItem.startDate, Inventory.currentDate).getDays();
-            int threshold = (int)((double)currItem.totalSale / days) * 7;
+            int days = (int) ChronoUnit.DAYS.between(currItem.startDate, Inventory.currentDate);
+            double val = ((double)currItem.totalSale / days) * 7.0;
+            int threshold = (int) Math.ceil(val);
             if(threshold > currItem.quantity) {
-                orderList.put(e.getKey(), threshold - currItem.quantity);
-                currItem.quantity = threshold;
+                try {
+                    orderList.put(e.getKey(), threshold - currItem.quantity);
+                    currItem.quantity = threshold;
+                    Connection con = DB.getConnection();
+                    PreparedStatement ps = con.prepareStatement("UPDATE items SET quantity = ? WHERE item_uid = ?");
+                    ps.setInt(1, threshold);
+                    ps.setInt(2, currItem.uID);
+                    ps.executeUpdate();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Inventory.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         }
         return orderList;

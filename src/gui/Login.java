@@ -46,6 +46,7 @@ public class Login extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Zulu");
         setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(0, 60, 60));
@@ -260,7 +261,6 @@ public class Login extends javax.swing.JFrame {
         }
         //</editor-fold>
         
-//        Inventory.type().retrieveData();
         /* Create and display the form */
         UIManager.put("Button.focus", Color.white);
         java.awt.EventQueue.invokeLater(new Runnable() {

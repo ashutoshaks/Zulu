@@ -61,6 +61,7 @@ public class RemoveItem extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Zulu");
         setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(0, 60, 60));
@@ -315,7 +316,6 @@ public class RemoveItem extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-//        Inventory.type().retrieveData();
         UIManager.put("Button.focus", Color.white);
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {

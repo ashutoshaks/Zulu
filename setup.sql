@@ -30,7 +30,6 @@ CREATE TABLE `items` (
     `vehicle_type` VARCHAR(200) DEFAULT NULL,
     `start_date` DATE DEFAULT NULL,
     PRIMARY KEY (`item_uid`)
-    -- FOREIGN KEY (`manufacturer_uid`) REFERENCES `manufacturers`(`manufacturer_uid`)
 );
 
 CREATE TABLE `sales` (
@@ -40,4 +39,4 @@ CREATE TABLE `sales` (
     PRIMARY KEY(`day_number`)
 );
 
-INSERT INTO `owner` (`uid`, `name`, `username`, `password`, `initial_date`, `curr_date`) VALUES (1, 'Zulu Malik', 'VASachcha', 'OKZulu!', '2021-04-01', '2021-04-01');
+INSERT INTO `owner` (`uid`, `name`, `username`, `password`, `initial_date`, `curr_date`) VALUES (1, 'Zulu Malik', 'VASachcha', 'OKZulu!', '2021-04-03', '2021-04-03');
