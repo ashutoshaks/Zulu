@@ -65,7 +65,7 @@ required and generate sales reports on a daily and monthly basis.
 
 - After the end of a day, the software generates a list of items to be ordered, which have fallen below a particular threshold, following the just-in-time philosophy.
 
-    <img src = "screenshots/orderlist.png" height = "400" width = "500">
+    <img src = "screenshots/orderlist.png" height = "475" width = "600">
 
 - The owner can also view the total sales of a day at the end of that day.
 
