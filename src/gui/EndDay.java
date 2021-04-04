@@ -12,6 +12,7 @@ import javax.swing.UIManager;
  *
  * @author achcha
  */
+
 public class EndDay extends javax.swing.JFrame {
 
     /**

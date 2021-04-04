@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite errors="0" failures="0" hostname="ashuhp" name="backend.ItemTest" skipped="0" tests="10" time="1.639" timestamp="2021-04-04T07:37:02">
+<testsuite errors="0" failures="0" hostname="ashuhp" name="backend.InventoryTest" skipped="0" tests="3" time="3.919" timestamp="2021-04-04T07:36:55">
   <properties>
     <property name="libs.spring-framework300.classpath" value="/snap/netbeans/45/netbeans/platform/modules/org-apache-commons-logging.jar:/snap/netbeans/45/netbeans/java/modules/ext/cglib-2.2.jar:/snap/netbeans/45/netbeans/java/modules/ext/spring-3.0/spring-aop-3.2.18.RELEASE.jar:/snap/netbeans/45/netbeans/java/modules/ext/spring-3.0/spring-aspects-3.2.18.RELEASE.jar:/snap/netbeans/45/netbeans/java/modules/ext/spring-3.0/spring-beans-3.2.18.RELEASE.jar:/snap/netbeans/45/netbeans/java/modules/ext/spring-3.0/spring-context-3.2.18.RELEASE.jar:/snap/netbeans/45/netbeans/java/modules/ext/spring-3.0/spring-context-support-3.2.18.RELEASE.jar:/snap/netbeans/45/netbeans/java/modules/ext/spring-3.0/spring-core-3.2.18.RELEASE.jar:/snap/netbeans/45/netbeans/java/modules/ext/spring-3.0/spring-expression-3.2.18.RELEASE.jar:/snap/netbeans/45/netbeans/java/modules/ext/spring-3.0/spring-instrument-3.2.18.RELEASE.jar:/snap/netbeans/45/netbeans/java/modules/ext/spring-3.0/spring-instrument-tomcat-3.2.18.RELEASE.jar:/snap/netbeans/45/netbeans/java/modules/ext/spring-3.0/spring-jdbc-3.2.18.RELEASE.jar:/snap/netbeans/45/netbeans/java/modules/ext/spring-3.0/spring-jms-3.2.18.RELEASE.jar:/snap/netbeans/45/netbeans/java/modules/ext/spring-3.0/spring-orm-3.2.18.RELEASE.jar:/snap/netbeans/45/netbeans/java/modules/ext/spring-3.0/spring-oxm-3.2.18.RELEASE.jar:/snap/netbeans/45/netbeans/java/modules/ext/spring-3.0/spring-struts-3.2.18.RELEASE.jar:/snap/netbeans/45/netbeans/java/modules/ext/spring-3.0/spring-test-3.2.18.RELEASE.jar:/snap/netbeans/45/netbeans/java/modules/ext/spring-3.0/spring-tx-3.2.18.RELEASE.jar:/snap/netbeans/45/netbeans/java/modules/ext/spring-3.0/spring-web-3.2.18.RELEASE.jar:/snap/netbeans/45/netbeans/java/modules/ext/spring-3.0/spring-webmvc-3.2.18.RELEASE.jar:/snap/netbeans/45/netbeans/java/modules/ext/spring-3.0/spring-webmvc-portlet-3.2.18.RELEASE.jar" />
     <property name="javac.test.classpath" value="lib/mysql-connector-java-8.0.23.jar:/home/ashutosh/Zulu/lib/absolutelayout/AbsoluteLayout.jar:lib/itextpdf-5.4.0.jar:lib/xchart-3.8.0.jar:build/classes:/home/ashutosh/Zulu/lib/junit_4/junit-4.13.1.jar:/home/ashutosh/Zulu/lib/hamcrest/hamcrest-core-1.3.jar" />
@@ -19,7 +19,7 @@
     <property name="libs.jsp-compilation.src" value="" />
     <property name="libs.JWSAntTasks.javadoc" value="" />
     <property name="sun.boot.library.path" value="/usr/lib/jvm/java-11-openjdk-amd64/lib" />
-    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner backend.ItemTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=true formatter=org.apache.tools.ant.taskdefs.optional.junit.BriefJUnitResultFormatter formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/ashutosh/Zulu/build/test/results/TEST-backend.ItemTest.xml crashfile=/home/ashutosh/Zulu/build/junitvmwatcher15162477126368261340.properties propsfile=/home/ashutosh/Zulu/build/junit9960343796370284754.properties" />
+    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner backend.InventoryTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=true formatter=org.apache.tools.ant.taskdefs.optional.junit.BriefJUnitResultFormatter formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/ashutosh/Zulu/build/test/results/TEST-backend.InventoryTest.xml crashfile=/home/ashutosh/Zulu/build/junitvmwatcher1184588263230507300.properties propsfile=/home/ashutosh/Zulu/build/junit11284955735442283814.properties" />
     <property name="jdk.debug" value="release" />
     <property name="libs.spring-framework300.src" value="" />
     <property name="javadoc.use" value="true" />
@@ -68,7 +68,7 @@
     <property name="jlink.additionalparam" value="" />
     <property name="libs.testng.maven-pom" value="" />
     <property name="org.openide.version" value="deprecated" />
-    <property name="test.includes" value="backend/ItemTest.java" />
+    <property name="test.includes" value="backend/InventoryTest.java" />
     <property name="run.classpath" value="lib/mysql-connector-java-8.0.23.jar:/home/ashutosh/Zulu/lib/absolutelayout/AbsoluteLayout.jar:lib/itextpdf-5.4.0.jar:lib/xchart-3.8.0.jar:build/classes" />
     <property name="libs.jaxb.src" value="" />
     <property name="sun.awt.enableExtraMouseButtons" value="true" />
@@ -212,7 +212,7 @@
     <property name="libs.jsp-compilation-syscp.classpath" value="/snap/netbeans/45/netbeans/extide/ant/lib/ant.jar:/snap/netbeans/45/netbeans/enterprise/modules/ext/servlet3.1-jsp2.3-api.jar:/snap/netbeans/45/netbeans/enterprise/modules/ext/glassfish-jspparser-4.0.jar:/snap/netbeans/45/netbeans/enterprise/modules/ext/jstl-impl.jar:/snap/netbeans/45/netbeans/enterprise/modules/ext/jsf-2_2/javax.faces.jar" />
     <property name="libs.jsp-compilation.classpath" value="/snap/netbeans/45/netbeans/extide/ant/lib/ant.jar:/snap/netbeans/45/netbeans/enterprise/modules/ext/servlet3.1-jsp2.3-api.jar:/snap/netbeans/45/netbeans/enterprise/modules/ext/glassfish-jspparser-4.0.jar:/snap/netbeans/45/netbeans/enterprise/modules/ext/jsf-2_2/javax.faces.jar:/snap/netbeans/45/netbeans/enterprise/modules/ext/jstl-api.jar:/snap/netbeans/45/netbeans/extide/ant/lib/ant-launcher.jar" />
     <property name="libs.javaee-api-6.0.classpath" value="/snap/netbeans/45/netbeans/enterprise/modules/ext/javaee-api-6.0.jar" />
-    <property name="javac.includesfile.binary" value="/home/ashutosh/Zulu/null2088963099" />
+    <property name="javac.includesfile.binary" value="/home/ashutosh/Zulu/null152999874" />
     <property name="libs.javaee-api-7.0.classpath" value="/snap/netbeans/45/netbeans/enterprise/modules/ext/javaee-api-7.0.jar" />
     <property name="sun.cpu.isalist" value="" />
     <property name="libs.restapi.maven-pom" value="" />
@@ -337,7 +337,7 @@
     <property name="netbeans.autoupdate.version" value="1.23" />
     <property name="empty.dir" value="/home/ashutosh/Zulu/build/empty" />
     <property name="netbeans.user" value="/home/ashutosh/snap/netbeans/common/data/12.3" />
-    <property name="javac.includes.binary" value="/home/ashutosh/Zulu/build/test/classes/backend/ItemTest.class" />
+    <property name="javac.includes.binary" value="/home/ashutosh/Zulu/build/test/classes/backend/InventoryTest.class" />
     <property name="file.separator" value="/" />
     <property name="line.separator" value="&#xa;" />
     <property name="javadoc.additionalparam" value="" />
@@ -375,7 +375,7 @@
     <property name="libs.spring-framework500.src" value="" />
     <property name="libs.javaee-api-6.0.src" value="" />
     <property name="user.properties.file" value="/home/ashutosh/snap/netbeans/common/data/12.3/build.properties" />
-    <property name="javac.includes" value="backend/ItemTest.java" />
+    <property name="javac.includes" value="backend/InventoryTest.java" />
     <property name="netbeans.autoupdate.country" value="IN" />
     <property name="java.class.path" value="/home/ashutosh/Zulu/lib/mysql-connector-java-8.0.23.jar:/home/ashutosh/Zulu/lib/absolutelayout/AbsoluteLayout.jar:/home/ashutosh/Zulu/lib/itextpdf-5.4.0.jar:/home/ashutosh/Zulu/lib/xchart-3.8.0.jar:/home/ashutosh/Zulu/build/classes:/home/ashutosh/Zulu/lib/junit_4/junit-4.13.1.jar:/home/ashutosh/Zulu/lib/hamcrest/hamcrest-core-1.3.jar:/home/ashutosh/Zulu/build/test/classes:/snap/netbeans/45/netbeans/extide/ant/lib/ant-launcher.jar:/snap/netbeans/45/netbeans/extide/ant/lib/ant.jar:/snap/netbeans/45/netbeans/extide/ant/lib/ant-junit.jar:/snap/netbeans/45/netbeans/extide/ant/lib/ant-junit4.jar" />
     <property name="libs.javaee-web-api-6.0.maven-pom" value="" />
@@ -426,7 +426,7 @@
     <property name="java.vm.version" value="11.0.10+9-Ubuntu-0ubuntu1.20.04" />
     <property name="libs.metro.javadoc" value="/snap/netbeans/45/netbeans/enterprise/docs/webservices-api-javadoc.jar:/snap/netbeans/45/netbeans/enterprise/docs/webservices-extra-javadoc.jar:/snap/netbeans/45/netbeans/enterprise/docs/webservices-extra-api-javadoc.jar:/snap/netbeans/45/netbeans/enterprise/docs/webservices-rt-javadoc.jar:/snap/netbeans/45/netbeans/enterprise/docs/webservices-tools-javadoc.jar" />
     <property name="sun.awt.datatransfer.timeout" value="1000" />
-    <property name="test.class" value="backend.ItemTest" />
+    <property name="test.class" value="backend.InventoryTest" />
     <property name="junit.forkmode" value="perTest" />
     <property name="libs.jsp-compiler.classpath" value="/snap/netbeans/45/netbeans/enterprise/ant/extra/jspcompile.jar" />
     <property name="annotation.processing.run.all.processors" value="true" />
@@ -434,26 +434,12 @@
     <property name="libs.javaee-web-api-7.0.src" value="" />
     <property name="libs.javaee-endorsed-api-6.0.classpath" value="/snap/netbeans/45/netbeans/enterprise/modules/ext/javaee6-endorsed/javax.annotation.jar:/snap/netbeans/45/netbeans/enterprise/modules/ext/javaee6-endorsed/jaxb-api-osgi.jar:/snap/netbeans/45/netbeans/enterprise/modules/ext/javaee6-endorsed/webservices-api-osgi.jar" />
   </properties>
-  <testcase classname="backend.ItemTest" name="a_testGetUID" time="0.006" />
-  <testcase classname="backend.ItemTest" name="b_testGetType" time="0.001" />
-  <testcase classname="backend.ItemTest" name="c_testGetPrice" time="0.0" />
-  <testcase classname="backend.ItemTest" name="d_testGetQuantity" time="0.001" />
-  <testcase classname="backend.ItemTest" name="e_testGetManufacturerID" time="0.0" />
-  <testcase classname="backend.ItemTest" name="f_testGetVehicleType" time="0.001" />
-  <testcase classname="backend.ItemTest" name="g_testGetStartDate" time="0.001" />
-  <testcase classname="backend.ItemTest" name="h_testSave" time="0.417" />
-  <testcase classname="backend.ItemTest" name="i_testDelete" time="0.37" />
-  <testcase classname="backend.ItemTest" name="j_testUpdateSale" time="0.355" />
-  <system-out><![CDATA[getUID
-getType
-getPrice
-getQuantity
-getManufacturerID
-getVehicleType
-getStartDate
-save
-delete
-updateSale
+  <testcase classname="backend.InventoryTest" name="a_testType" time="0.466" />
+  <testcase classname="backend.InventoryTest" name="b_testRetrieveData" time="0.777" />
+  <testcase classname="backend.InventoryTest" name="c_testRemoveItem" time="2.61" />
+  <system-out><![CDATA[type
+retrieveData
+removeItem
 ]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

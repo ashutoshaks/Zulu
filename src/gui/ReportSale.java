@@ -18,6 +18,7 @@ import javax.swing.UIManager;
  *
  * @author achcha
  */
+
 public class ReportSale extends javax.swing.JFrame {
 
     /**

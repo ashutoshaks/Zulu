@@ -12,10 +12,12 @@ import java.util.Set;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
+
 /**
  *
  * @author achcha
  */
+
 public class RemoveItem extends javax.swing.JFrame {
 
     /**

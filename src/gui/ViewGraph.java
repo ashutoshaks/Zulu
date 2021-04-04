@@ -28,6 +28,7 @@ import org.knowm.xchart.style.Styler.LegendPosition;
  *
  * @author achcha
  */
+
 public class ViewGraph extends javax.swing.JFrame {
 
     /**

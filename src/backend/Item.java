@@ -11,6 +11,7 @@ import java.time.LocalDate;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -47,8 +48,29 @@ public class Item {
         this.manufacturerID = manufacturerID_;
         this.vehicleType = vehicleType_;
         this.startDate = startDate_;
-        if(uID_ == -1)
+        if(uID_ == -1) {
             Inventory.itemsList.put(this.uID, this);
+            if(Inventory.searchMap.containsKey(this.type)) {
+                if(Inventory.searchMap.get(this.type).containsKey((this.manufacturerID))) {
+                    Inventory.searchMap.get(this.type).get(this.manufacturerID).put(this.vehicleType, this);
+                }
+                else {
+                    HashMap<String, Item> temp1 = new HashMap<>();
+                    temp1.put(this.vehicleType, this);
+
+                    Inventory.searchMap.get(this.type).put(this.manufacturerID, temp1);
+                }
+            }
+            else {
+                HashMap<String, Item> temp1 = new HashMap<>();
+                temp1.put(this.vehicleType, this);
+
+                HashMap<Integer, HashMap<String, Item>> temp2 = new HashMap<>();
+                temp2.put(this.manufacturerID, temp1);
+
+                Inventory.searchMap.put(this.type, temp2);
+            }
+        }
     }
     
     public int getUID(){

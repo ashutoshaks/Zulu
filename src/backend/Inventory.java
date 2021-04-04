@@ -32,6 +32,9 @@ public class Inventory {
     
     private static Inventory instance = null;
     
+    private Inventory() {
+    }
+    
     public static Inventory type() {
         if(instance == null)
             instance = new Inventory();
@@ -39,7 +42,6 @@ public class Inventory {
     }
     
     public void retrieveData(){
-//        System.out.println("backend.Inventory.retrieveData() pe aa gaya");
         try {
             Connection con = DB.getConnection();
             PreparedStatement ps;

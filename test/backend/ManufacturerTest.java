@@ -26,6 +26,7 @@ import org.junit.runners.MethodSorters;
  *
  * @author achcha
  */
+
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class ManufacturerTest {
     

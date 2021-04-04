@@ -17,6 +17,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author achcha
  */
+
 public class ViewInventory extends javax.swing.JFrame {
 
     /**
