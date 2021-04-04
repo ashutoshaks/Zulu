@@ -37,41 +37,40 @@ required and generate sales reports on a daily and monthly basis.
 
 - The software connects to the database for retrieving and storing data.
 
-    <!-- ![homepage](screenshots/homepage.png =100x200) -->
-    <img src = "screenshots/homepage.png" height = "" width = "">
+    <img src = "screenshots/homepage.png" height = "400" width = "420">
 
 - Login for the shop owner.
 
-    ![login](screenshots/login.png)
+    <img src = "screenshots/login.png" height = "350" width = "400">
 
 - The shop owner is the main operator of the software and has absolute access to all the functionalities as indicated in the dashboard.
 
-    ![dashboard](screenshots/dashboard.png)
+    <img src = "screenshots/dashboard.png" height = "410" width = "420">
 
 - The Add Item feature allows the owner to add a new item to the shop inventory by specifying its type, manufacturer details, vehicle type, initial quantity and price.
 
-    ![additem](screenshots/additem.png)
+    <img src = "screenshots/additem.png" height = "400" width = "430">
 
 - The Delete / Remove Item feature allows the owner to remove an item from the inventory, which is no longer needed.
 
-    ![removeitem](screenshots/removeitem.png)
+    <img src = "screenshots/removeitem.png" height = "400" width = "370">
 
 - The Report Sale feature allows the owner to record a transaction for a particular motor part.
 
-    ![reportsale](screenshots/reportsale.png)
+    <img src = "screenshots/reportsale.png" height = "400" width = "390">
 
 - The View Inventory feature allows the owner to get a glance at a list of all the items currently present in the inventory.
 
-    ![viewinventory](screenshots/viewinventory.png)
+    <img src = "screenshots/viewinventory.png" height = "500" width = "600">
 
 - After the end of a day, the software generates a list of items to be ordered, which have fallen below a particular threshold, following the just-in-time philosophy.
 
-    ![orderlist](screenshots/orderlist.png)
+    <img src = "screenshots/orderlist.png" height = "400" width = "500">
 
 - The owner can also view the total sales of a day at the end of that day.
 
-    ![salesreport](screenshots/salesreport.png)
+    <img src = "screenshots/salesreport.png" height = "300" width = "350">
 
 - The software also generates a graph at the end of each month showing the daily sales for that month.
 
-    ![graph](screenshots/graph.png)
+    <img src = "screenshots/graph.png" height = "465" width = "800">
