@@ -20,6 +20,8 @@ import java.util.logging.Logger;
  * @author achcha
  */
 
+// Item class
+
 public class Item {
     int uID;
     String type;
@@ -33,6 +35,7 @@ public class Item {
     
     static int nextUID = 0;
     
+    // Constructor
     public Item(int uID_, String type_, float price_, int quantity_, int daySale_, int totalSale_, int manufacturerID_, String vehicleType_, LocalDate startDate_) {
         if(uID_ == -1) 
             this.uID = ++Item.nextUID;
@@ -73,6 +76,7 @@ public class Item {
         }
     }
     
+    // Getters
     public int getUID(){
         return uID;
     }
@@ -101,6 +105,7 @@ public class Item {
         return startDate;
     }
     
+    // Function to save a new Item to the database
     public int save(){
         int status = 0;
         try {
@@ -123,6 +128,7 @@ public class Item {
         return ((status > 0) ? 1 : 0);
     }
     
+    // Function to remove an Item from the database
     public int delete(){
         int status = 0;
         try {
@@ -137,6 +143,7 @@ public class Item {
         return status;
     }
     
+    // Function to update records after a transaction
     public boolean updateSale(int numSold){
         if(numSold > this.quantity)
             return false;

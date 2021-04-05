@@ -22,6 +22,8 @@ import java.util.logging.Logger;
  * @author achcha
  */
 
+// Inventory class, modelled as a singleton
+
 public class Inventory {
     public static HashMap<String, HashMap<Integer, HashMap<String, Item>>> searchMap = new HashMap<String, HashMap<Integer, HashMap<String, Item>>>();
     public static HashMap<Integer, Item> itemsList = new HashMap<Integer, Item>();
@@ -32,6 +34,7 @@ public class Inventory {
     
     private static Inventory instance = null;
     
+    // private constructor for a singleton class
     private Inventory() {
     }
     
@@ -41,6 +44,7 @@ public class Inventory {
         return instance;
     }
     
+    // Function to reteieve the existing data from the database when the software is started
     public void retrieveData(){
         try {
             Connection con = DB.getConnection();
@@ -108,6 +112,7 @@ public class Inventory {
         }
     }
     
+    // Function to make changes after removing an Item
     public boolean removeItem(int itemUID){
         int status = 0;
         try {
@@ -143,6 +148,7 @@ public class Inventory {
         return (status > 0);
     }
     
+    // Function for making changes when a day is over
     public void endDay() {
         try {
             float totalDayAmount = 0;
@@ -172,7 +178,7 @@ public class Inventory {
         }
     }
     
-    
+    // Function to retrieve the list of items to be ordered at the end of a day
     public HashMap<Integer, Integer> getOrderList() {
         HashMap<Integer, Integer> orderList = new HashMap<>();
         for(Map.Entry<Integer, Item> e : Inventory.itemsList.entrySet()) {

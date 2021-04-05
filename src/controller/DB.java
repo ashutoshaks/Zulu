@@ -16,7 +16,11 @@ import java.util.logging.Logger;
  * @author achcha
  */
 
+// DB class
+
 public class DB {
+    
+    // Returns a connection to the database for querying and updating it
     public static Connection getConnection() {
         Connection con = null;
         try {

@@ -18,26 +18,30 @@ import java.util.logging.Logger;
  * @author achcha
  */
 
+// Owner class, modelled as a singleton
+
 public class Owner {
     String name;
     String username;
     String password;
     
     private static Owner instance = null;
-
+    
+    // private constructor for a singleton
     private Owner() {
         this.name = "Zulu Malik";
         this.username = "VASachcha";
         this.password = "OKZulu!";
     }
     
+    // Function to get the singleton instance
     public static Owner type() {
         if(instance == null)
             instance = new Owner();
         return instance;
     }
     
-    
+    // Getters and Setters
     public String getName(){
         return name;
     }
@@ -54,6 +58,7 @@ public class Owner {
         this.username = username;
     }
     
+    // Function that validates the username and password enterd for verification
     public static boolean validate(String username, String password){
         boolean flag = false;
         try {

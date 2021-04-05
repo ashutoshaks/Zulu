@@ -18,6 +18,8 @@ import java.util.logging.Logger;
  * @author achcha
  */
 
+// Manufacturer class
+
 public class Manufacturer {
     int uID;
     String name;
@@ -26,6 +28,7 @@ public class Manufacturer {
     
     static int nextUID = 0;
     
+    // Constructor
     public Manufacturer(int uID_, String name_, String address_, int itemCount_) {
         if(uID_ == -1) 
             this.uID = ++Manufacturer.nextUID;
@@ -42,6 +45,7 @@ public class Manufacturer {
         }
     }
     
+    // Getters
     public int getUID(){
         return uID;
     }
@@ -62,6 +66,7 @@ public class Manufacturer {
         this.itemCount++;
     }
     
+    // Function to save a new Manufacturer to the database
     public int save(){
         int status = 0;
         try {
@@ -79,6 +84,7 @@ public class Manufacturer {
         return ((status > 0) ? 1 : 0);
     }
     
+    // Function to delete a Manufacturer from the database
     public int delete(){
         int status = 0;
         try {
