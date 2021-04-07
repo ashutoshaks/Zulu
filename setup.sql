@@ -39,4 +39,4 @@ CREATE TABLE `sales` (
     PRIMARY KEY(`day_number`)
 );
 
-INSERT INTO `owner` (`uid`, `name`, `username`, `password`, `initial_date`, `curr_date`) VALUES (1, 'Zulu Malik', 'VASachcha', 'OKZulu!', '2021-04-03', '2021-04-03');
+INSERT INTO `owner` (`uid`, `name`, `username`, `password`, `initial_date`, `curr_date`) VALUES (1, 'Zulu Malik', 'VASachcha', 'OKZulu!', '2021-04-06', '2021-04-06');
